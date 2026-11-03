@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.module.libzdf" name="libzdf" version="5.0.3" provider-name="sarbes">
+<addon id="script.module.libzdf" name="libzdf" version="5.0.4" provider-name="sarbes">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.libmediathek4" version="1.0.0"/>
@@ -12,7 +12,15 @@
     <source>https://github.com/sarbes/script.module.libzdf</source>
     <summary lang="en_GB">This is a scraper for the ZDF Mediathek (http://www.zdf.de).</summary>
     <description lang="en_GB">This is a scraper for the ZDF Mediathek (http://www.zdf.de) and similar.</description>
-    <news>5.0.3 - Reparatur gegenueber 5.0.2 von sarbes (Jorga Wetzel, 03.11.2026):
+    <news>5.0.4 - Reparatur (Jorga Wetzel, 03.11.2026):
+- ZDF: "Sendung verpasst" blieb leer. Der Sender hat dem Dokument das eigene
+  Profil special-page-broadcast-missed gegeben; der Inhalt ist unveraendert und
+  steht weiter unter broadcasts-page. Dieses Profil wird jetzt behandelt.
+- Bei einem unbekannten Profil schreibt das Add-on den Aufbau der Antwort ins
+  Protokoll. Das ZDF vergibt neue Profile ohne Vorankuendigung; damit ist der
+  naechste Fall ohne eigenen API-Zugriff nachvollziehbar.
+
+5.0.3 - Reparatur gegenueber 5.0.2 von sarbes (Jorga Wetzel, 03.11.2026):
 - ZDF: Token wird aus der Konfiguration der Senderwebseite gelesen. Der bisher
   genutzte Endpunkt zdf-cdn.live.cellular.de ist abgeschaltet, sein Hostname
   loest nicht mehr auf - das Add-on konnte gar keine Abfrage mehr ausfuehren.

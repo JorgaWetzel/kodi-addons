@@ -133,6 +133,18 @@ class parser:
 			return self._parseTV(j)
 		elif j['profile'] == 'http://zdf.de/rels/cmdm/resultpage-broadcasts':
 			return self._parseBroadcast(j)
+		elif j['profile'] == 'http://zdf.de/rels/content/special-page-broadcast-missed':
+			# "Sendung verpasst" lief früher über das Profil page-index. Seit dem
+			# 03.11.2026 vergibt das ZDF dafür ein eigenes Profil, ohne den Inhalt zu
+			# ändern: die Sendungen stehen weiter unter broadcasts-page und haben dort
+			# denselben Aufbau wie eine resultpage-broadcasts.
+			seite = j.get('http://zdf.de/rels/broadcasts-page')
+			if isinstance(seite, dict) and 'http://zdf.de/rels/cmdm/broadcasts' in seite:
+				return self._parseBroadcast(seite)
+			log('special-page-broadcast-missed ohne verwertbare broadcasts-page: %s'
+				% (sorted(seite.keys()) if isinstance(seite, dict) else type(seite).__name__))
+			lm4utils.displayMsg('ZDF Mediathek', 'Der Sender hat den Aufbau dieser Rubrik geändert')
+			return self.result
 		elif j['profile'] in ['http://zdf.de/rels/gone','http://zdf.de/rels/not-found']:
 			# Das ZDF schaltet einzelne Dokumente ab, ohne die Adresse zu entfernen.
 			lm4utils.displayMsg('ZDF Mediathek', 'Diese Rubrik gibt es beim Sender nicht mehr')
@@ -142,6 +154,14 @@ class parser:
 			# Vorher stand hier ein nacktes `raise` ausserhalb eines except-Blocks; das
 			# ergab die irreführende Meldung "No active exception to reraise".
 			log('Unknown profile: ' + j['profile'])
+			# Den Aufbau mitschreiben. Das ZDF vergibt einem Dokument gelegentlich ein
+			# neues Profil, ohne den Inhalt zu ändern; dann genügt ein weiterer Zweig
+			# oben. Ohne diese Zeilen muss man dafür erst einen Token besorgen und das
+			# Dokument von Hand abrufen.
+			log('  Schlüssel oberste Ebene: %s' % sorted(j.keys()))
+			for schluessel in ('module', 'cluster', 'stage', 'teaser'):
+				if schluessel in j and isinstance(j[schluessel], list) and j[schluessel]:
+					log('  %s[0]: %s' % (schluessel, sorted(j[schluessel][0].keys())))
 			lm4utils.displayMsg('ZDF Mediathek', 'Unbekanntes Antwortformat des Senders')
 			return self.result
 
