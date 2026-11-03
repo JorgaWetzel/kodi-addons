@@ -1,0 +1,15 @@
+<advancedsettings>
+  <!-- Kodi reserviert bis zum Dreifachen von memorysize. Der Standard von 20 MB
+       ist für Streams zu knapp, der früher verbreitete Rat von 292 MB sprengt
+       Geräte wie die Shield (dort nur rund 1 GB frei): 3 x 292 MB = 876 MB führen
+       zum Absturz. 100 MB bedeuten höchstens 300 MB und laufen stabil. -->
+  <cache>
+    <memorysize>104857600</memorysize>
+    <buffermode>1</buffermode>
+    <readfactor>4.0</readfactor>
+  </cache>
+  <epg>
+    <!-- Die Meldung beim EPG-Aufbau verdeckt sonst bei jedem Start das Menü -->
+    <displayupdatepopup>false</displayupdatepopup>
+  </epg>
+</advancedsettings>

@@ -1,0 +1,482 @@
+<?xml version='1.0' encoding='utf-8'?>
+<settings>
+    <setting id="arcade.games.hidestudioflags" type="bool">false</setting>
+    <setting id="disable.autoscroll" type="bool">false</setting>
+    <setting id="tmdbhelper.disableratings" type="bool">false</setting>
+    <setting id="disable.fanart" type="bool">false</setting>
+    <setting id="enable.remoteweathericons" type="bool">false</setting>
+    <setting id="tmdbhelper.disableartwork" type="bool">false</setting>
+    <setting id="movies_902_hidelabels" type="bool">false</setting>
+    <setting id="enable.iconlandscape" type="bool">false</setting>
+    <setting id="keibertzplussnaps" type="bool">false</setting>
+    <setting id="tmdbhelper.enabledesaturate" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-recentlyaddedmovies" type="bool">true</setting>
+    <setting id="movies_902_staticicons" type="bool">false</setting>
+    <setting id="arcadetitles" type="bool">false</setting>
+    <setting id="enable.vizpersistent" type="bool">false</setting>
+    <setting id="tmdbhelper.enabletranslationproperties" type="bool">false</setting>
+    <setting id="hidetopbarweather" type="bool">false</setting>
+    <setting id="enable.highlightfocused" type="bool">false</setting>
+    <setting id="disable.mainquicknav" type="bool">false</setting>
+    <setting id="tmdbhelper.disablepvr" type="bool">false</setting>
+    <setting id="enable.panellogo" type="bool">false</setting>
+    <setting id="tvshows_902_staticicons" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-recentalbums" type="bool">true</setting>
+    <setting id="skinshortcuts-widget-videoaddons" type="bool">true</setting>
+    <setting id="enable.biglistlogo" type="bool">false</setting>
+    <setting id="tmdbhelper.enablecrop" type="bool">false</setting>
+    <setting id="arcademoviesbiginfo" type="bool">false</setting>
+    <setting id="sauna2ndtitles" type="bool">false</setting>
+    <setting id="arcadetvshowsbiginfo" type="bool">false</setting>
+    <setting id="hidevisualizationfanart" type="bool">false</setting>
+    <setting id="movies_900_landscape" type="bool">false</setting>
+    <setting id="enable.actorroleimages" type="bool">false</setting>
+    <setting id="weatherfanart.multi" type="bool">false</setting>
+    <setting id="enable.touchscreen" type="bool">false</setting>
+    <setting id="enable.iconbanner" type="bool">false</setting>
+    <setting id="arcade.games.biginfo" type="bool">false</setting>
+    <setting id="tmdbhelper.enablecolors" type="bool">false</setting>
+    <setting id="SkinShortcuts-FullMenu" type="bool">true</setting>
+    <setting id="enable.wallbanner" type="bool">false</setting>
+    <setting id="coverflowgamesbasic" type="bool">false</setting>
+    <setting id="bigasslabel" type="bool">false</setting>
+    <setting id="enable.thumbnaillandscape" type="bool">false</setting>
+    <setting id="arcadegamesmini" type="bool">false</setting>
+    <setting id="tmdbhelper.enablecurrentwindowimages" type="bool">false</setting>
+    <setting id="tmdbhelper.disablepersonstats" type="bool">false</setting>
+    <setting id="episodes_902_hidelabels" type="bool">false</setting>
+    <setting id="sauna2ndvideo" type="bool">false</setting>
+    <setting id="enable.thumbnaillogo" type="bool">false</setting>
+    <setting id="disable.resumableoverlay" type="bool">false</setting>
+    <setting id="kioskmode.enabled" type="bool">false</setting>
+    <setting id="games_902_staticicons" type="bool">false</setting>
+    <setting id="games_902_hidelabels" type="bool">false</setting>
+    <setting id="arcademoviesreversed" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-nextepisodes" type="bool">true</setting>
+    <setting id="arcadeepisodesbiginfo" type="bool">false</setting>
+    <setting id="episodes_902_hidereflections" type="bool">false</setting>
+    <setting id="episodes_900_hidelabels" type="bool">false</setting>
+    <setting id="disable.quicknav" type="bool">false</setting>
+    <setting id="enable.walllandscape" type="bool">false</setting>
+    <setting id="tmdbhelper.service" type="bool">true</setting>
+    <setting id="enable.biglistfanart" type="bool">false</setting>
+    <setting id="enable.vizinfo" type="bool">false</setting>
+    <setting id="enable.mediaflags" type="bool">false</setting>
+    <setting id="arcadesnaps" type="bool">false</setting>
+    <setting id="videoinfoplottoggle" type="bool">false</setting>
+    <setting id="arcade.games.cirrus" type="bool">false</setting>
+    <setting id="enable.panelfanart" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-myfavorites" type="bool">true</setting>
+    <setting id="skinshortcuts-widget-recentchannels" type="bool">true</setting>
+    <setting id="saunadisablezoom" type="bool">false</setting>
+    <setting id="enable.actorlocalimages" type="bool">false</setting>
+    <setting id="infowall.logo" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-favgames" type="bool">true</setting>
+    <setting id="enable.2columnlist" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-Addon" type="bool">true</setting>
+    <setting id="saunaboxshot" type="bool">false</setting>
+    <setting id="enable.fanartlandscape" type="bool">false</setting>
+    <setting id="tvshows_900_hidestars" type="bool">false</setting>
+    <setting id="tmdbhelper.uselocalwidgetcontainer" type="bool">true</setting>
+    <setting id="arcadeepisodesreversed" type="bool">false</setting>
+    <setting id="movies_900_hidestars" type="bool">false</setting>
+    <setting id="enable.iconlogo" type="bool">false</setting>
+    <setting id="episodes_900_hidestudioflags" type="bool">false</setting>
+    <setting id="tvshows_902_hidereflections" type="bool">false</setting>
+    <setting id="enable.combinemenus" type="bool">false</setting>
+    <setting id="enable.slimlist" type="bool">false</setting>
+    <setting id="enable.shiftplot" type="bool">false</setting>
+    <setting id="enable.shiftdescription" type="bool">false</setting>
+    <setting id="enable.shiftvidfanart" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-favorites" type="bool">true</setting>
+    <setting id="tmdbhelper.enableblur" type="bool">false</setting>
+    <setting id="use_startup_playlist" type="bool">false</setting>
+    <setting id="tvshows_900_hidestudioflags" type="bool">false</setting>
+    <setting id="enable.externalmoviegenreicons" type="bool">false</setting>
+    <setting id="tvshows_902_hidelabels" type="bool">false</setting>
+    <setting id="movies_902_hidereflections" type="bool">false</setting>
+    <setting id="movies_900_hidestudioflags" type="bool">false</setting>
+    <setting id="disable.showbackgroundvis" type="bool">false</setting>
+    <setting id="saunatitles" type="bool">false</setting>
+    <setting id="arcade.trailers" type="bool">false</setting>
+    <setting id="arcade.games.reversed" type="bool">false</setting>
+    <setting id="weather.zoom.detailed" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-recentlyaddedmusicvideos" type="bool">true</setting>
+    <setting id="enable.externaltvgenreicons" type="bool">false</setting>
+    <setting id="saunasnaps" type="bool">false</setting>
+    <setting id="enable.settingspanelview" type="bool">false</setting>
+    <setting id="infowall.banners" type="bool">false</setting>
+    <setting id="disable.animations" type="bool">false</setting>
+    <setting id="enable.fanartlogo" type="bool">false</setting>
+    <setting id="arcade.games.mini" type="bool">false</setting>
+    <setting id="saunadouble" type="bool">false</setting>
+    <setting id="arcadetvshowsmini" type="bool">false</setting>
+    <setting id="hide_background_fanart" type="bool">false</setting>
+    <setting id="enable.biglistthumb" type="bool">false</setting>
+    <setting id="tmdbhelper.disableextendedproperties" type="bool">false</setting>
+    <setting id="enable.biglistposter" type="bool">false</setting>
+    <setting id="arcade.games.hidestars" type="bool">false</setting>
+    <setting id="arcademoviesmini" type="bool">false</setting>
+    <setting id="saunavertical" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-settings" type="bool">true</setting>
+    <setting id="enable.shiftfanart" type="bool">false</setting>
+    <setting id="coverflowmoviesbasic" type="bool">false</setting>
+    <setting id="disable.showbackgroundvideo" type="bool">false</setting>
+    <setting id="disable.autocomplete" type="bool">false</setting>
+    <setting id="enable.fanartfanart" type="bool">false</setting>
+    <setting id="enable.externalmusicgenreicons" type="bool">false</setting>
+    <setting id="enable.zoomradar" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-myplaylists" type="bool">false</setting>
+    <setting id="enable.widelist" type="bool">false</setting>
+    <setting id="enable.shiftlandscape" type="bool">false</setting>
+    <setting id="arcade.games.adaptive" type="bool">false</setting>
+    <setting id="topbarhidebackground" type="bool">false</setting>
+    <setting id="tvshows_900_landscape" type="bool">false</setting>
+    <setting id="coverflowtvshowsbasic" type="bool">false</setting>
+    <setting id="disable.watchedoverlay" type="bool">false</setting>
+    <setting id="saunatrailers" type="bool">false</setting>
+    <setting id="pictureinfo.disabled" type="bool">false</setting>
+    <setting id="enable.horizontalmenu" type="bool">false</setting>
+    <setting id="episodes_900_hidestars" type="bool">false</setting>
+    <setting id="tmdbhelper.forcewidgetcontainer" type="bool">false</setting>
+    <setting id="keibertzplustitles" type="bool">false</setting>
+    <setting id="Disable.NextAired" type="bool">true</setting>
+    <setting id="enable.walllogo" type="bool">false</setting>
+    <setting id="sauna2ndsnaps" type="bool">false</setting>
+    <setting id="arcadetvshowsreversed" type="bool">false</setting>
+    <setting id="arcadeepisodesmini" type="bool">false</setting>
+    <setting id="tvshows_902_landscape" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-mysubmenu" type="bool">true</setting>
+    <setting id="enable.thumbnailfanart" type="bool">false</setting>
+    <setting id="games_902_hidereflections" type="bool">false</setting>
+    <setting id="movies_902_landscape" type="bool">false</setting>
+    <setting id="enable.unwatchedoverlay" type="bool">false</setting>
+    <setting id="skinshortcuts-widget-weather" type="bool">false</setting>
+    <setting id="LowPanel.tvshows.Art1" type="string" />
+    <setting id="LowList.sets.Art1" type="string" />
+    <setting id="LowPanel.videos.Art1" type="string" />
+    <setting id="InfoWall.musicvideos.Art1" type="string" />
+    <setting id="Panel.musicvideos.Art1" type="string" />
+    <setting id="Arcade.s.Art1" type="string" />
+    <setting id="MusicVideos.Fallback" type="string" />
+    <setting id="Sauna.episodes.Art1" type="string" />
+    <setting id="Sauna.songs.Art1" type="string" />
+    <setting id="Wall.sets.Art1" type="string" />
+    <setting id="Wall.games.Art1" type="string" />
+    <setting id="KeibertzPlus.artists.Art1" type="string" />
+    <setting id="Episode.musicvideos.Art1" type="string" />
+    <setting id="LowPanel.games.Art1" type="string" />
+    <setting id="Coverflow.actors.Art1" type="string" />
+    <setting id="SongList.albums.Art1" type="string" />
+    <setting id="BigWall.episodes.Art1" type="string" />
+    <setting id="Episode.movies.Art1" type="string" />
+    <setting id="InfoWall.artist.Art2" type="string" />
+    <setting id="TVGenreIcons.ext" type="string" />
+    <setting id="Fanart.files.Art1" type="string" />
+    <setting id="Gallery.artists.Art1" type="string" />
+    <setting id="Panel.sets.Art1" type="string" />
+    <setting id="Shift.artists.Art1" type="string" />
+    <setting id="SongList.actors.Art1" type="string" />
+    <setting id="MovieGenreIcons.name" type="string" />
+    <setting id="Coverflow.episodes.Art1" type="string" />
+    <setting id="LowList.games.Art1" type="string" />
+    <setting id="LowList.songs.Art1" type="string" />
+    <setting id="Coverflow.songs.Art1" type="string" />
+    <setting id="Episode.episodes.Art1" type="string" />
+    <setting id="InfoWall.episodes.Art1" type="string" />
+    <setting id="Arcade.sets.Art1" type="string" />
+    <setting id="Gallery.files.Art1" type="string" />
+    <setting id="Sauna.tvshows.Art1" type="string" />
+    <setting id="LowPanel.albums.Art1" type="string" />
+    <setting id="LowPanel.songs.Art1" type="string" />
+    <setting id="Shift.actors.Art1" type="string" />
+    <setting id="Thumbnail.episodes.Art1" type="string" />
+    <setting id="custommoviegenreicons.path" type="string" />
+    <setting id="InfoWall..Art2" type="string" />
+    <setting id="List.episode.Art2" type="string" />
+    <setting id="Arcade.movies.Art1" type="string" />
+    <setting id="InfoWall.actor.Art2" type="string" />
+    <setting id="Sauna.seasons.Art1" type="string" />
+    <setting id="TMDbHelper.MonitorContainer" type="string" />
+    <setting id="TVGenreIcons.name" type="string" />
+    <setting id="List.games.Art1" type="string" />
+    <setting id="customhomeslideshow" type="string" />
+    <setting id="SongList.seasons.Art1" type="string" />
+    <setting id="KeibertzPlus.actors.Art1" type="string" />
+    <setting id="Shift.movies.Art1" type="string" />
+    <setting id="InfoWall.season.Art2" type="string" />
+    <setting id="BigList.movies.Art1" type="string" />
+    <setting id="BigWall.artists.Art1" type="string" />
+    <setting id="Sauna.files.Art1" type="string" />
+    <setting id="LowList.movies.Art1" type="string" />
+    <setting id="Coverflow.albums.Art1" type="string" />
+    <setting id="List.seasons.Art1" type="string" />
+    <setting id="Wall.actors.Art1" type="string" />
+    <setting id="System.Fallback" type="string" />
+    <setting id="Thumbnail.songs.Art1" type="string" />
+    <setting id="BigWall.sets.Art1" type="string" />
+    <setting id="Wall.artists.Art1" type="string" />
+    <setting id="Panel.songs.Art1" type="string" />
+    <setting id="Wall.movies.Art1" type="string" />
+    <setting id="Gallery.movies.Art1" type="string" />
+    <setting id="Thumbnail.artists.Art1" type="string" />
+    <setting id="Gallery.songs.Art1" type="string" />
+    <setting id="Coverflow.s.Art1" type="string" />
+    <setting id="skinshortcuts-widget-11" type="string">settings</setting>
+    <setting id="BigList.tvshows.Art1" type="string" />
+    <setting id="LowList.musicvideos.Art1" type="string" />
+    <setting id="TVShows.Fallback" type="string" />
+    <setting id="BigList.musicvideos.Art1" type="string" />
+    <setting id="List.actors.Art1" type="string" />
+    <setting id="List.actor.Art2" type="string" />
+    <setting id="Gallery.videos.Art1" type="string" />
+    <setting id="Apps.Fallback" type="string" />
+    <setting id="Sauna.sets.Art1" type="string" />
+    <setting id="BigList.seasons.Art1" type="string" />
+    <setting id="LowList.actors.Art1" type="string" />
+    <setting id="List.artist.Art2" type="string" />
+    <setting id="custommusicgenreicons.path" type="string" />
+    <setting id="BigList.sets.Art1" type="string" />
+    <setting id="BigList.actors.Art1" type="string" />
+    <setting id="LowList.artists.Art1" type="string" />
+    <setting id="KeibertzPlus.games.Art1" type="string" />
+    <setting id="InfoWall.videos.Art1" type="string" />
+    <setting id="Gallery.s.Art1" type="string" />
+    <setting id="Fanart.artists.Art1" type="string" />
+    <setting id="InfoWall.games.Art1" type="string" />
+    <setting id="LowList.episodes.Art1" type="string" />
+    <setting id="BigWall.movies.Art1" type="string" />
+    <setting id="List.video.Art2" type="string" />
+    <setting id="Arcade.games.Art1" type="string" />
+    <setting id="skinshortcuts-widget-8" type="string">mysubmenu</setting>
+    <setting id="custombackground" type="string" />
+    <setting id="Wall.files.Art1" type="string" />
+    <setting id="Coverflow.files.Art1" type="string" />
+    <setting id="Fanart.videos.Art1" type="string" />
+    <setting id="InfoWall.tvshow.Art2" type="string" />
+    <setting id="Shift.musicvideos.Art1" type="string" />
+    <setting id="BigList.s.Art1" type="string" />
+    <setting id="LowList.s.Art1" type="string" />
+    <setting id="Thumbnail.actors.Art1" type="string" />
+    <setting id="Panel.artists.Art1" type="string" />
+    <setting id="List.tvshow.Art2" type="string" />
+    <setting id="List.musicvideos.Art1" type="string" />
+    <setting id="VisBackgroundMask" type="string">88FFFFFF</setting>
+    <setting id="SongList.movies.Art1" type="string" />
+    <setting id="InfoWall.set.Art2" type="string" />
+    <setting id="Panel.episodes.Art1" type="string" />
+    <setting id="tvgenreicons.path" type="string" />
+    <setting id="TMDbHelper.Corner.Radius" type="string" />
+    <setting id="Panel.files.Art1" type="string" />
+    <setting id="SongList.videos.Art1" type="string" />
+    <setting id="BigWall.actors.Art1" type="string" />
+    <setting id="KeibertzPlus.seasons.Art1" type="string" />
+    <setting id="List.videos.Art1" type="string" />
+    <setting id="Thumbnail.s.Art1" type="string" />
+    <setting id="KeibertzPlus.sets.Art1" type="string" />
+    <setting id="Sauna.actors.Art1" type="string" />
+    <setting id="CustomActorRoleImages.path" type="string" />
+    <setting id="Gallery.actors.Art1" type="string" />
+    <setting id="KeibertzPlus.files.Art1" type="string" />
+    <setting id="KeibertzPlus.s.Art1" type="string" />
+    <setting id="Arcade.episodes.Art" type="string" />
+    <setting id="Panel.movies.Art1" type="string" />
+    <setting id="InfoWall.tvshows.Art1" type="string" />
+    <setting id="Coverflow.games.Art1" type="string" />
+    <setting id="SongList.tvshows.Art1" type="string" />
+    <setting id="BigList.files.Art1" type="string" />
+    <setting id="SongList.files.Art1" type="string" />
+    <setting id="Episode.albums.Art1" type="string" />
+    <setting id="Coverflow.sets.Art1" type="string" />
+    <setting id="SongList.sets.Art1" type="string" />
+    <setting id="Wall.s.Art1" type="string" />
+    <setting id="Gallery.seasons.Art1" type="string" />
+    <setting id="InfoWall.episode.Art2" type="string" />
+    <setting id="Thumbnail.files.Art1" type="string" />
+    <setting id="BigWall.videos.Art1" type="string" />
+    <setting id="Gallery.sets.Art1" type="string" />
+    <setting id="Coverflow.musicvideos.Art1" type="string" />
+    <setting id="Movies.Fallback" type="string" />
+    <setting id="Episode.tvshows.Art1" type="string" />
+    <setting id="skinshortcuts-widget-5" type="string">myfavorites</setting>
+    <setting id="InfoWall.albums.Art1" type="string" />
+    <setting id="InfoWall.sets.Art1" type="string" />
+    <setting id="Episode.actors.Art1" type="string" />
+    <setting id="LowList.files.Art1" type="string" />
+    <setting id="InfoWall.songs.Art1" type="string" />
+    <setting id="Shift.tvshows.Art1" type="string" />
+    <setting id="Panel.videos.Art1" type="string" />
+    <setting id="Thumbnail.sets.Art1" type="string" />
+    <setting id="MusicGenreIcons.ext" type="string" />
+    <setting id="Videos.Fallback" type="string" />
+    <setting id="Fanart.sets.Art1" type="string" />
+    <setting id="Thumbnail.videos.Art1" type="string" />
+    <setting id="Fanart.songs.Art1" type="string" />
+    <setting id="BigList.games.Art1" type="string" />
+    <setting id="skinshortcuts-widget-6" type="string">addon</setting>
+    <setting id="Coverflow.artists.Art1" type="string" />
+    <setting id="LowList.videos.Art1" type="string" />
+    <setting id="Sauna.videos.Art1" type="string" />
+    <setting id="InfoWall.artists.Art1" type="string" />
+    <setting id="Shift.s.Art1" type="string" />
+    <setting id="weathericons.path" type="string" />
+    <setting id="LowPanel.actors.Art1" type="string" />
+    <setting id="Shift.videos.Art1" type="string" />
+    <setting id="SongList.s.Art1" type="string" />
+    <setting id="Shift.files.Art1" type="string" />
+    <setting id="Wall.episodes.Art1" type="string" />
+    <setting id="musicvis.view" type="string" />
+    <setting id="TMDbHelper.Date.Format" type="string" />
+    <setting id="Sauna.s.Art1" type="string" />
+    <setting id="musicgenreicons.path" type="string" />
+    <setting id="Sauna.games.Art1" type="string" />
+    <setting id="Panel.albums.Art1" type="string" />
+    <setting id="Shift.games.Art1" type="string" />
+    <setting id="Fanart.musicvideos.Art1" type="string" />
+    <setting id="Episode.seasons.Art1" type="string" />
+    <setting id="Fanart.games.Art1" type="string" />
+    <setting id="InfoWall.actors.Art1" type="string" />
+    <setting id="customtvgenreicons.path" type="string" />
+    <setting id="TMDbHelper.AutoUpdate.LastTime" type="string" />
+    <setting id="KeibertzPlus.albums.Art1" type="string" />
+    <setting id="InfoWall.video.Art2" type="string" />
+    <setting id="Sauna.albums.Art1" type="string" />
+    <setting id="Panel.games.Art1" type="string" />
+    <setting id="Gallery.musicvideos.Art1" type="string" />
+    <setting id="List.set.Art2" type="string" />
+    <setting id="Episode.videos.Art1" type="string" />
+    <setting id="KeibertzPlus.musicvideos.Art1" type="string" />
+    <setting id="List.songs.Art1" type="string" />
+    <setting id="List.artists.Art1" type="string" />
+    <setting id="weathericons.ext" type="string" />
+    <setting id="skinshortcuts-widget-7" type="string">settings</setting>
+    <setting id="Shift.seasons.Art1" type="string" />
+    <setting id="TMDbHelper.Blur.Radius" type="string" />
+    <setting id="Episode.files.Art1" type="string" />
+    <setting id="SongList.games.Art1" type="string" />
+    <setting id="BigList.songs.Art1" type="string" />
+    <setting id="Gallery.games.Art1" type="string" />
+    <setting id="Sauna.artists.Art1" type="string" />
+    <setting id="Thumbnail.albums.Art1" type="string" />
+    <setting id="BigList.albums.Art1" type="string" />
+    <setting id="KeibertzPlus.tvshows.Art1" type="string" />
+    <setting id="BigList.videos.Art1" type="string" />
+    <setting id="InfoWall.album.Art2" type="string" />
+    <setting id="weatherfanart.path" type="string" />
+    <setting id="widgetPath" type="string" />
+    <setting id="moviegenreicons.path" type="string" />
+    <setting id="LowPanel.seasons.Art1" type="string" />
+    <setting id="BigWall.s.Art1" type="string" />
+    <setting id="List.episodes.Art1" type="string" />
+    <setting id="List.tvshows.Art1" type="string" />
+    <setting id="List.movies.Art1" type="string" />
+    <setting id="Sauna.movies.Art1" type="string" />
+    <setting id="SongList.episodes.Art1" type="string" />
+    <setting id="Thumbnail.games.Art1" type="string" />
+    <setting id="KeibertzPlus.videos.Art1" type="string" />
+    <setting id="SongList.songs.Art1" type="string" />
+    <setting id="Episode.artists.Art1" type="string" />
+    <setting id="Thumbnail.musicvideos.Art1" type="string" />
+    <setting id="Arcade.files.Art1" type="string" />
+    <setting id="Fanart.actors.Art1" type="string" />
+    <setting id="Episode.sets.Art1" type="string" />
+    <setting id="Arcade.musicvideos.Art1" type="string" />
+    <setting id="skinshortcuts-widget-2" type="string">Addon</setting>
+    <setting id="LowList.seasons.Art1" type="string" />
+    <setting id="Panel.s.Art1" type="string" />
+    <setting id="Arcade.tvshows.Art1" type="string" />
+    <setting id="Panel.seasons.Art1" type="string" />
+    <setting id="Arcade.videos.Art1" type="string" />
+    <setting id="BigWall.songs.Art1" type="string" />
+    <setting id="Shift.episodes.Art1" type="string" />
+    <setting id="customoverlay" type="string" />
+    <setting id="Episode.s.Art1" type="string" />
+    <setting id="Coverflow.movies.Art1" type="string" />
+    <setting id="TMDbHelper.Blur.Size" type="string" />
+    <setting id="BigWall.games.Art1" type="string" />
+    <setting id="Coverflow.seasons.Art1" type="string" />
+    <setting id="Shift.songs.Art1" type="string" />
+    <setting id="Fanart.tvshows.Art1" type="string" />
+    <setting id="Wall.videos.Art1" type="string" />
+    <setting id="Arcade.albums.Art1" type="string" />
+    <setting id="Gallery.episodes.Art1" type="string" />
+    <setting id="LowList.albums.Art1" type="string" />
+    <setting id="skinshortcuts-widget-9" type="string">weather</setting>
+    <setting id="Episode.games.Art1" type="string" />
+    <setting id="skinshortcuts-widget-4" type="string">Addon</setting>
+    <setting id="Shift.sets.Art1" type="string" />
+    <setting id="BigWall.seasons.Art1" type="string" />
+    <setting id="LowPanel.episodes.Art1" type="string" />
+    <setting id="InfoWall.files.Art1" type="string" />
+    <setting id="InfoWall.s.Art1" type="string" />
+    <setting id="busyloader" type="string" />
+    <setting id="List.albums.Art1" type="string" />
+    <setting id="InfoWall.seasons.Art1" type="string" />
+    <setting id="Panel.tvshows.Art1" type="string" />
+    <setting id="Fanart.movies.Art1" type="string" />
+    <setting id="List.song.Art2" type="string" />
+    <setting id="MusicGenreIcons.name" type="string" />
+    <setting id="Wall.musicvideos.Art1" type="string" />
+    <setting id="BigWall.files.Art1" type="string" />
+    <setting id="List..Art2" type="string" />
+    <setting id="LowPanel.movies.Art1" type="string" />
+    <setting id="LowPanel.musicvideos.Art1" type="string" />
+    <setting id="InfoWall.movie.Art2" type="string" />
+    <setting id="Sauna.musicvideos.Art1" type="string" />
+    <setting id="Thumbnail.seasons.Art1" type="string" />
+    <setting id="KeibertzPlus.episodes.Art1" type="string" />
+    <setting id="Wall.albums.Art1" type="string" />
+    <setting id="Coverflow.videos.Art1" type="string" />
+    <setting id="List.files.Art1" type="string" />
+    <setting id="LowPanel.artists.Art1" type="string" />
+    <setting id="BigWall.tvshows.Art1" type="string" />
+    <setting id="Panel.actors.Art1" type="string" />
+    <setting id="Wall.seasons.Art1" type="string" />
+    <setting id="LiveTV.Fallback" type="string" />
+    <setting id="List.album.Art2" type="string" />
+    <setting id="LowPanel.files.Art1" type="string" />
+    <setting id="InfoWall.movies.Art1" type="string" />
+    <setting id="Arcade.artists.Art1" type="string" />
+    <setting id="LowPanel.sets.Art1" type="string" />
+    <setting id="KeibertzPlus.songs.Art1" type="string" />
+    <setting id="Shift.albums.Art1" type="string" />
+    <setting id="skinshortcuts-sharedmenu" type="string">true</setting>
+    <setting id="BigList.artists.Art1" type="string" />
+    <setting id="Thumbnail.tvshows.Art1" type="string" />
+    <setting id="InfoWall.song.Art2" type="string" />
+    <setting id="BigWall.musicvideos.Art1" type="string" />
+    <setting id="SongList.artists.Art1" type="string" />
+    <setting id="Fanart.episodes.Art1" type="string" />
+    <setting id="Fanart.s.Art1" type="string" />
+    <setting id="Thumbnail.movies.Art1" type="string" />
+    <setting id="Startup_Playlist_Path" type="string" />
+    <setting id="skinshortcuts-widget-10" type="string">myplaylists</setting>
+    <setting id="Arcade.songs.Art1" type="string" />
+    <setting id="MovieGenreIcons.ext" type="string" />
+    <setting id="musicvis.background" type="string">fanart</setting>
+    <setting id="LowList.tvshows.Art1" type="string" />
+    <setting id="Arcade.actors.Art1" type="string" />
+    <setting id="Fanart.albums.Art1" type="string" />
+    <setting id="KeibertzPlus.movies.Art1" type="string" />
+    <setting id="TMDbHelper.UseLocalWindowIDs" type="string" />
+    <setting id="Wall.songs.Art1" type="string" />
+    <setting id="Gallery.albums.Art1" type="string" />
+    <setting id="skinshortcuts-widget-3" type="string">Addon</setting>
+    <setting id="List.movie.Art2" type="string" />
+    <setting id="Arcade.seasons.Art1" type="string" />
+    <setting id="Coverflow.tvshows.Art1" type="string" />
+    <setting id="List.s.Art1" type="string" />
+    <setting id="SongList.musicvideos.Art1" type="string" />
+    <setting id="List.season.Art2" type="string" />
+    <setting id="Gallery.tvshows.Art1" type="string" />
+    <setting id="InfoWall.musicvideo.Art2" type="string" />
+    <setting id="LowPanel.s.Art1" type="string" />
+    <setting id="List.sets.Art1" type="string" />
+    <setting id="skinshortcuts-widget-1" type="string">recentchannels</setting>
+    <setting id="List.musicvideo.Art2" type="string" />
+    <setting id="Episode.songs.Art1" type="string" />
+    <setting id="BigWall.albums.Art1" type="string" />
+    <setting id="Fanart.seasons.Art1" type="string" />
+    <setting id="Wall.tvshows.Art1" type="string" />
+    <setting id="BigList.episodes.Art1" type="string" />
+</settings>

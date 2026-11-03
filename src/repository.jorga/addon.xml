@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repository.jorga" name="Jorga Repository" version="1.0.0" provider-name="Jorga Wetzel">
+<addon id="repository.jorga" name="Jorga Repository" version="2.0.0" provider-name="Jorga Wetzel">
 	<extension point="xbmc.addon.repository" name="Jorga Repository">
+		<!-- Eigene Quelle: der Einrichtungsassistent und die reparierten Add-ons -->
 		<dir>
 			<info compressed="false">https://raw.githubusercontent.com/JorgaWetzel/kodi-addons/main/repo/addons.xml</info>
 			<checksum>https://raw.githubusercontent.com/JorgaWetzel/kodi-addons/main/repo/addons.xml.md5</checksum>
 			<datadir zip="true">https://raw.githubusercontent.com/JorgaWetzel/kodi-addons/main/repo/</datadir>
+		</dir>
+		<!-- Originalquelle des TMDb-Helpers. Das offizielle Kodi-Repository hinkt dort
+		     mehrere Hauptversionen nachher; der Einrichtungsassistent nutzt den Helper
+		     für Cover und Widgets. Fällt diese Quelle aus, bleiben die übrigen nutzbar:
+		     Kodi behandelt jeden dir-Block für sich. -->
+		<dir minversion="20.9.1">
+			<info compressed="false">https://raw.githubusercontent.com/jurialmunkey/repository.jurialmunkey/master/omega/zips/addons.xml</info>
+			<checksum>https://raw.githubusercontent.com/jurialmunkey/repository.jurialmunkey/master/omega/zips/addons.xml.md5</checksum>
+			<datadir zip="true">https://raw.githubusercontent.com/jurialmunkey/repository.jurialmunkey/master/omega/zips/</datadir>
 		</dir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<platform>all</platform>
 		<license>GPL-2.0-only</license>
 		<source>https://github.com/JorgaWetzel/kodi-addons</source>
-		<summary lang="de_DE">Reparierte Mediathek-Add-ons für ARD, ZDF und 3sat</summary>
-		<description lang="de_DE">Liefert Fassungen der Mediathek-Add-ons von sarbes, die gegen den aktuellen Stand der Sender-APIs repariert wurden. Das ZDF-Add-on holte sein Zugangstoken von einem abgeschalteten Server und funktionierte gar nicht mehr; bei 3sat liess ein einzelner unvollständiger Eintrag die gesamte Sendungsliste leer; die ARD-Mediathek brach bei Jugendschutzsperren mit einem Skriptfehler ab. Die Versionsnummern liegen über denen des offiziellen Kodi-Repositoriums, damit die Reparaturen bei einem Update nicht wieder überschrieben werden.</description>
-		<summary lang="en_GB">Repaired German public broadcaster add-ons for ARD, ZDF and 3sat</summary>
-		<description lang="en_GB">Provides versions of the Mediathek add-ons by sarbes repaired against the current state of the broadcasters' APIs.</description>
+		<summary lang="de_DE">Fertige Kodi-Einrichtung für die Mediatheken im deutschsprachigen Raum</summary>
+		<description lang="de_DE">Enthält einen Einrichtungsassistenten, der Kodi in einem Zug einsatzfertig macht: Skin mit fertigem Startmenü, die Mediatheken von ARD, ZDF, SRF, ARTE und 3sat sowie die passenden Kodi-Einstellungen. Die bestehende Einrichtung wird vorher gesichert und lässt sich jederzeit zurückholen.
+
+Dazu liefert das Repository Fassungen der Mediathek-Add-ons von sarbes, die gegen den aktuellen Stand der Sender-APIs repariert wurden. Das ZDF-Add-on holte sein Zugangstoken von einem abgeschalteten Server und funktionierte gar nicht mehr; bei 3sat liess ein einzelner unvollständiger Eintrag die gesamte Sendungsliste leer; die ARD-Mediathek brach bei Jugendschutzsperren mit einem Skriptfehler ab. Die Versionsnummern liegen über denen des offiziellen Kodi-Repositoriums, damit die Reparaturen bei einem Update nicht wieder überschrieben werden.</description>
+		<summary lang="en_GB">Ready-made Kodi setup for German-language public broadcasters</summary>
+		<description lang="en_GB">Contains a setup wizard that configures Kodi in one step: skin with a ready-made home menu, the ARD, ZDF, SRF, ARTE and 3sat media libraries, and matching Kodi settings. The existing setup is backed up first and can be restored at any time.
+
+It also provides versions of the Mediathek add-ons by sarbes repaired against the current state of the broadcasters' APIs.</description>
+		<news>2.0.0
+- Neu: Einrichtungsassistent "Jorga Build" - spielt Skin, Startmenü und Einstellungen ein
+- Neu: Originalquelle des TMDb-Helpers eingebunden
+1.0.0
+- Erste Fassung mit den reparierten Mediathek-Add-ons</news>
 		<assets>
 			<icon>icon.png</icon>
 		</assets>

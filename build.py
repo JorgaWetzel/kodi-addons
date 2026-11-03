@@ -56,9 +56,11 @@ def packe(ordner: pathlib.Path, ziel: pathlib.Path):
 
 
 def main():
-    if REPO.exists():
-        shutil.rmtree(REPO)
-    REPO.mkdir()
+    # Das Verzeichnis wird nicht geleert: aeltere ZIP-Fassungen bleiben liegen.
+    # Ein einmal weitergegebener Download-Link soll nicht brechen, nur weil eine
+    # neue Fassung gebaut wurde. Kodi nimmt ohnehin die hoechste Version aus
+    # addons.xml; wer noch das alte ZIP installiert, wird von dort aktualisiert.
+    REPO.mkdir(exist_ok=True)
 
     teile = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', "<addons>"]
     gebaut = []

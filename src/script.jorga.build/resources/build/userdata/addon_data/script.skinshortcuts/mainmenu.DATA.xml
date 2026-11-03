@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='utf-8'?>
+<shortcuts>
+	<shortcut>
+		<defaultID />
+		<label>Mediatheken</label>
+		<label2>Alle Sender auf einen Blick</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/video.png</thumb>
+		<action>ActivateWindow(Videos,"plugin://plugin.video.mediatheken/",return)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID />
+		<label>ARD</label>
+		<label2>ARD Mediathek</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/tv.png</thumb>
+		<action>ActivateWindow(Videos,"plugin://plugin.video.ardmediathek_de/",return)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID />
+		<label>ZDF</label>
+		<label2>ZDF Mediathek</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/tv.png</thumb>
+		<action>ActivateWindow(Videos,"plugin://plugin.video.zdf_de_lite/",return)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID />
+		<label>SRF</label>
+		<label2>SRF Play</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/tv.png</thumb>
+		<action>ActivateWindow(Videos,"plugin://plugin.video.srfplaytv/",return)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID />
+		<label>ARTE</label>
+		<label2>ARTE</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/tv.png</thumb>
+		<action>ActivateWindow(Videos,"plugin://plugin.video.arteplussept/",return)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID />
+		<label>3sat</label>
+		<label2>3sat Mediathek</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/tv.png</thumb>
+		<action>ActivateWindow(Videos,"plugin://plugin.video.3satmediathek/",return)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID />
+		<label>YouTube</label>
+		<label2>YouTube</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/video.png</thumb>
+		<action>ActivateWindow(Videos,"plugin://plugin.video.youtube/",return)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID />
+		<label>Suche</label>
+		<label2>Alles durchsuchen</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/search.png</thumb>
+		<action>RunScript(script.globalsearch)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID>favorites</defaultID>
+		<label>Favoriten</label>
+		<label2>Common menu item</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/favourite.png</thumb>
+		<action>ActivateWindow(favourites)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID>add-ons</defaultID>
+		<label>Addons</label>
+		<label2>Common menu item</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/addon.png</thumb>
+		<action>ActivateWindow(10040)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID>settings</defaultID>
+		<label>Einstellungen</label>
+		<label2>Common menu item</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>DefaultIconSettings.png</thumb>
+		<action>ActivateWindow(Settings)</action>
+	</shortcut>
+	<shortcut>
+		<defaultID />
+		<label>Beenden</label>
+		<label2>Kodi beenden</label2>
+		<icon>DefaultShortcut.png</icon>
+		<thumb>special://skin/extras/icons/power.png</thumb>
+		<action>Quit</action>
+	</shortcut>
+</shortcuts>

@@ -1,0 +1,7 @@
+<favourites>
+    <favourite name="ARD - Sendung verpasst">ActivateWindow(Videos,&quot;plugin://plugin.video.ardmediathek_de/&quot;,return)</favourite>
+    <favourite name="ZDF Mediathek">ActivateWindow(Videos,&quot;plugin://plugin.video.zdf_de_lite/&quot;,return)</favourite>
+    <favourite name="SRF Play">ActivateWindow(Videos,&quot;plugin://plugin.video.srfplaytv/&quot;,return)</favourite>
+    <favourite name="ARTE">ActivateWindow(Videos,&quot;plugin://plugin.video.arteplussept/&quot;,return)</favourite>
+    <favourite name="3sat">ActivateWindow(Videos,&quot;plugin://plugin.video.3satmediathek/&quot;,return)</favourite>
+</favourites>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.jorga.build" name="Jorga Build - Einrichtungsassistent" version="1.0.0" provider-name="Jorga Wetzel">
+	<requires>
+		<import addon="xbmc.python" version="3.0.0" />
+		<!-- Alles, was zur fertigen Einrichtung gehört. Kodi löst diese Liste bei der
+		     Installation selbst auf und holt jedes Stück samt seiner eigenen
+		     Abhängigkeiten - deshalb genügt ein ZIP für die ganze Konfiguration.
+		     Ohne Versionsnummer, damit Kodi immer die neueste verfügbare nimmt und die
+		     Installation nicht an einer zu hoch gesetzten Mindestversion scheitert. -->
+		<import addon="skin.mimic.lr" />
+		<import addon="script.skinshortcuts" />
+		<import addon="plugin.video.mediatheken" />
+		<import addon="plugin.video.youtube" />
+		<import addon="plugin.video.themoviedb.helper" />
+		<import addon="script.globalsearch" />
+		<import addon="inputstream.adaptive" />
+		<import addon="resource.language.de_de" />
+		<import addon="metadata.themoviedb.org.python" />
+		<import addon="metadata.tvshows.themoviedb.org.python" />
+	</requires>
+	<extension point="xbmc.python.script" library="default.py">
+		<provides>executable</provides>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<license>GPL-2.0-only</license>
+		<source>https://github.com/JorgaWetzel/kodi-addons</source>
+		<summary lang="de">Richtet Kodi in einem Zug ein: Skin, Startmenü, Mediatheken und Einstellungen</summary>
+		<description lang="de">Spielt eine vollständige, geprüfte Kodi-Einrichtung ein: den Skin Mimic-LR mit fertigem Startmenü, die Mediatheken von ARD, ZDF, SRF, ARTE und 3sat sowie die dazu passenden Kodi-Einstellungen.
+
+Die bestehende Einrichtung wird vorher automatisch gesichert und lässt sich im selben Assistenten jederzeit zurückholen.
+
+Die Add-ons selbst kommen aus dem offiziellen Kodi-Repository. Dieses Paket bringt nur die Konfiguration mit und die Reparaturen an den Mediathek-Add-ons, die das offizielle Repository noch nicht hat.</description>
+		<news>1.0.0
+- Erste Fassung: Einrichtung einspielen, sichern und zurückholen</news>
+		<assets>
+			<icon>icon.png</icon>
+		</assets>
+	</extension>
+</addon>
