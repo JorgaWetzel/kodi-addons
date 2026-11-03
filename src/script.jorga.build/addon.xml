@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.jorga.build" name="Jorga Build - Einrichtungsassistent" version="1.0.0" provider-name="Jorga Wetzel">
+<addon id="script.jorga.build" name="Jorga Build - Einrichtungsassistent" version="1.1.0" provider-name="Jorga Wetzel">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0" />
 		<!-- Alles, was zur fertigen Einrichtung gehört. Kodi löst diese Liste bei der
@@ -30,8 +30,20 @@
 
 Die bestehende Einrichtung wird vorher automatisch gesichert und lässt sich im selben Assistenten jederzeit zurückholen.
 
-Die Add-ons selbst kommen aus dem offiziellen Kodi-Repository. Dieses Paket bringt nur die Konfiguration mit und die Reparaturen an den Mediathek-Add-ons, die das offizielle Repository noch nicht hat.</description>
-		<news>1.0.0
+Die Add-ons selbst kommen aus dem offiziellen Kodi-Repository. Dieses Paket bringt nur die Konfiguration mit und die Reparaturen an den Mediathek-Add-ons, die das offizielle Repository noch nicht hat.
+
+Ab 1.1.0 kann der Assistent ausserdem ein ganzes Gerät übertragen: Ein bestehendes Kodi schreibt sich selbst in eine Paketdatei - Add-on-Liste, Bezugsquellen, Startmenü, Einstellungen -, und ein anderes Gerät baut sich danach auf. Die Add-ons selbst stecken nicht im Paket, sondern werden aus ihren Quellen in der jeweils aktuellen Fassung geladen. Eine Paketdatei bleibt dadurch wenige hundert Kilobyte gross.</description>
+		<news>1.1.0
+- Neu: ein ganzes Gerät übertragen. "Dieses Gerät als Paket sichern" schreibt
+  Add-on-Liste, Bezugsquellen, Startmenü und Einstellungen in eine Datei,
+  "Gerät aus Paket einrichten" baut ein anderes Gerät danach auf.
+- Add-ons werden samt ihrer Abhängigkeiten aus den Katalogen der Repositories
+  geladen, nicht mitgeliefert - so veraltet nichts und das Paket bleibt klein.
+- Das Startmenü wird jetzt vollständig übernommen: die erzeugte Menüdatei im
+  Skin-Ordner wird entfernt, damit Kodi sie aus den eingespielten Dateien neu
+  aufbaut. Ohne das blieb das alte Menü stehen.
+
+1.0.0
 - Erste Fassung: Einrichtung einspielen, sichern und zurückholen</news>
 		<assets>
 			<icon>icon.png</icon>

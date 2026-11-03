@@ -1,0 +1,11 @@
+# Bytecode. Entsteht beim Prüfen mit py_compile und beim Lauf auf dem Gerät.
+# Gehört nie ins Repository: Kodi erzeugt ihn selbst, und eine mitgelieferte
+# .pyc aus einer anderen Python-Fassung lässt das Add-on stumm die alte
+# Fassung ausführen.
+__pycache__/
+*.py[cod]
+
+# Gerätepakete. Die beschreiben ein konkretes Gerät samt dessen Add-on-Liste
+# und gehören dem, der sie erzeugt - nicht in ein öffentliches Repository.
+geraet-*.zip
+shield-*.zip

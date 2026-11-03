@@ -35,18 +35,56 @@ mit und fasst sie in einem Menü zusammen, ohne Einstellungen anzutasten.
 
 ## Der Einrichtungsassistent
 
-Vier Punkte unter **Add-ons → Programm-Add-ons → Jorga Build**:
+Unter **Add-ons → Programm-Add-ons → Jorga Build**. Der Assistent kann zweierlei,
+und das sind verschiedene Dinge.
+
+### Ein ganzes Gerät übertragen
+
+Ein bestehendes Kodi beschreibt sich selbst in einer Paketdatei, ein anderes baut
+sich danach auf — mit seinen Add-ons, seinem Startmenü, seinen Einstellungen.
 
 | Punkt | Was er tut |
 |---|---|
-| Einrichtung einspielen | Sichert die bestehende Einrichtung, spielt dann Startmenü, Favoriten, Skin-Einstellungen und 44 Kodi-Einstellungen ein |
-| Was wird eingespielt? | Zeigt vorher jede Datei und jede Einstellung an |
-| Eigene Einrichtung sichern | Legt eine Sicherung an, ohne etwas zu ändern |
+| Dieses Gerät als Paket sichern | Schreibt Add-on-Liste, Bezugsquellen, Startmenü, Favoriten und Einstellungen in **eine** Datei |
+| Gerät aus Paket einrichten | Baut dieses Gerät nach einem Paket auf: lädt die Add-ons, spielt die Konfiguration ein |
+| Was steckt in einem Paket? | Listet Inhalt und Herkunft auf, bevor etwas passiert |
+
+**Die Add-ons selbst stecken nicht im Paket.** Ein gewachsenes Gerät trägt schnell
+ein halbes Gigabyte davon, und mitgelieferte Fassungen veralten ab dem Tag des
+Packens. Stattdessen stehen im Paket die Kataloge, aus denen die Add-ons stammen;
+das Zielgerät lädt daraus die jeweils aktuelle Fassung samt allem, was sie
+ihrerseits braucht. Gemessen an einem Gerät mit 120 Add-ons: **330 KB statt
+500 MB**.
+
+Zwei Dinge, die dabei leicht übersehen werden und hier gelöst sind:
+
+* **Das offizielle Kodi-Repository fehlt in jeder Erfassung**, weil es in Kodi
+  eingebaut ist und nicht im Add-on-Ordner liegt. Ohne es sind drei Dutzend
+  Add-ons unauffindbar — `inputstream.adaptive`, die Metadaten-Scraper,
+  `pvr.iptvsimple`. Der Assistent ergänzt es anhand der Kodi-Generation.
+* **Add-ons, deren Quelle verschwunden ist**, wären sonst für immer weg. Beim
+  Erfassen prüft der Assistent jede Kennung gegen die Kataloge und packt genau
+  die verwaisten mit ins Paket — und nur die.
+
+Was am Zielgerät nicht gefunden wird, meldet der Assistent namentlich, statt es
+zu verschweigen, und spielt alles Übrige trotzdem ein.
+
+### Die mitgelieferte Einrichtung einspielen
+
+Die steckt fest in diesem Paket und braucht keine Vorarbeit:
+
+| Punkt | Was er tut |
+|---|---|
+| Mitgelieferte Einrichtung einspielen | Sichert die bestehende, spielt dann Startmenü, Favoriten, Skin-Einstellungen und 44 Kodi-Einstellungen ein |
+| Was wird dabei eingespielt? | Zeigt vorher jede Datei und jede Einstellung an |
+| Nur die Konfiguration sichern | Legt eine Sicherung an, ohne etwas zu ändern |
 | Sicherung zurückholen | Spielt eine frühere Sicherung wieder ein |
 
-Für das Einrichten mehrerer Geräte geht es auch ohne Menü:
+Für das Einrichten mehrerer Geräte geht beides auch ohne Menü:
 
 ```
+RunScript(script.jorga.build,geraet-erfassen)
+RunScript(script.jorga.build,geraet-einspielen,<Pfad oder Adresse>,ohne-rueckfrage)
 RunScript(script.jorga.build,einspielen,ohne-rueckfrage)
 RunScript(script.jorga.build,sichern)
 RunScript(script.jorga.build,zurueckholen)
@@ -57,7 +95,7 @@ Startmenü, Favoriten, Quellen, Tastenbelegungen und Skin-Einstellungen. Nicht
 dabei sind `Database/` und `Thumbnails/` — die baut Kodi selbst neu auf und sie
 machen den Löwenanteil der Datenmenge aus.
 
-### Zwei Dinge, die der Assistent bewusst anders macht
+### Drei Dinge, die der Assistent bewusst anders macht
 
 **Einstellungen werden nicht als Datei kopiert, sondern gesetzt.** Kodi hält seine
 Einstellungen im Speicher und schreibt sie beim Beenden zurück. Eine kopierte
@@ -76,6 +114,13 @@ Builtin für den Skinwechsel gibt es nicht; und `lookandfeel.skin` in
 `guisettings.xml` zu schreiben hilft nicht, weil Kodi die Datei beim Beenden
 überschreibt. Bei einer frischen Installation stellt sich die Frage nicht: dort
 installiert Kodi den Skin als Abhängigkeit und fragt von selbst.
+
+**Das Startmenü wird an drei Stellen gepflegt, nicht an einer.** Wer bei
+`script.skinshortcuts` nur `mainmenu.DATA.xml` ersetzt, sieht keine Wirkung: Die
+Widget-Pfade stehen getrennt in `<skin>.properties`, und gerendert wird aus einer
+daraus erzeugten Include-Datei im Skin-Ordner. Bleibt die stehen, zeigt das Gerät
+trotz eingespielter Dateien weiter das alte Menü — am 03.11.2026 so gemessen. Der
+Assistent entfernt sie deshalb, damit Kodi sie neu aufbaut.
 
 ## Was repariert wurde
 
@@ -117,7 +162,7 @@ Beide melden jetzt den Grund und lassen die Liste bedienbar.
 | Add-on | Version | Herkunft |
 |---|---|---|
 | `repository.jorga` | 2.0.0 | dieses Repository |
-| `script.jorga.build` | 1.0.0 | dieses Repository — Einrichtungsassistent |
+| `script.jorga.build` | 1.1.0 | dieses Repository — Einrichtungsassistent |
 | `plugin.video.mediatheken` | 1.0.0 | dieses Repository — Sammelpaket und Menü |
 | `plugin.video.zdf_de_lite` | 5.0.3 | sarbes 5.0.2, repariert |
 | `script.module.libzdf` | 5.0.3 | sarbes 5.0.2, repariert (ZDF **und** 3sat) |
@@ -145,6 +190,14 @@ Repository von **jurialmunkey** für eine aktuelle Fassung des TMDb-Helpers.
   an der Hardware; eine fremde Auflösung aus einer Vorlage kann auf anderer
   Hardware ein schwarzes Bild erzeugen, aus dem der Nutzer nicht mehr
   herausfindet. Diese Werte bleiben deshalb unangetastet.
+- **Keine fremden Add-ons im Paket.** Wer ein Gerät überträgt, bekommt eine
+  Paketdatei mit Kennungen und Bezugsquellen — die Add-ons selbst lädt das
+  Zielgerät bei deren Anbietern. Dieses Repository verteilt also nur, was in der
+  Tabelle oben steht. Verschwindet eine fremde Quelle, fehlt ihr Add-on; der
+  Assistent sagt dann, welches.
+- **Ein Paket gehört dem, der es erzeugt.** Es beschreibt ein konkretes Gerät
+  samt dessen Add-on-Liste und bleibt deshalb dort, wo sein Besitzer es ablegt.
+  Im Repository liegt nur der Assistent, nie ein Paket.
 
 ## Selbst bauen
 
