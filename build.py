@@ -88,17 +88,37 @@ def main():
 
     teile.append("</addons>")
     addons_xml = "\n".join(teile) + "\n"
-    (REPO / "addons.xml").write_text(addons_xml, encoding="utf-8")
+
+    # newline="" unterbindet die Umwandlung von \n in \r\n unter Windows. Ohne das
+    # stimmt die Datei auf der Platte nicht zu der MD5-Summe, die hier aus dem
+    # String berechnet wird - und Kodi ignoriert ein Repository mit falscher Summe
+    # stillschweigend, ohne jede Fehlermeldung. Dass es ueber GitHub trotzdem lief,
+    # lag allein an .gitattributes (eol=lf) und waere bei einem lokalen Test oder
+    # einem Klon ohne diese Datei stillschweigend kaputt gewesen.
+    with open(REPO / "addons.xml", "w", encoding="utf-8", newline="") as f:
+        f.write(addons_xml)
 
     # Kodi vergleicht die Summe der Bytes, die es laedt - also ueber die kodierte Datei
     summe = hashlib.md5(addons_xml.encode("utf-8")).hexdigest()
-    (REPO / "addons.xml.md5").write_text(summe, encoding="utf-8")
+    with open(REPO / "addons.xml.md5", "w", encoding="utf-8", newline="") as f:
+        f.write(summe)
 
     print(f"{len(gebaut)} Add-ons gebaut:")
     for kennung, version in gebaut:
         print(f"  {kennung:<34} {version}")
-    print(f"\naddons.xml  {len(addons_xml)} Zeichen")
-    print(f"MD5         {summe}")
+
+    # Gegenprobe ueber die Datei, nicht ueber den String: nur so faellt auf, wenn
+    # das Schreiben die Bytes noch veraendert hat. Eine falsche Summe laesst Kodi
+    # das Repository ohne Fehlermeldung ignorieren - das darf nicht durchrutschen.
+    roh = (REPO / "addons.xml").read_bytes()
+    gelesen = hashlib.md5(roh).hexdigest()
+    if gelesen != summe:
+        raise SystemExit(
+            f"MD5 passt nicht zur geschriebenen Datei: {gelesen} statt {summe}.\n"
+            "Kodi wuerde dieses Repository stillschweigend ignorieren."
+        )
+    print(f"\naddons.xml  {len(roh)} Bytes")
+    print(f"MD5         {summe}  (gegen die Datei geprueft)")
 
 
 if __name__ == "__main__":
