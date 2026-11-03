@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.jorga" name="Jorga Repository" version="1.0.0" provider-name="Jorga Wetzel">
+	<extension point="xbmc.addon.repository" name="Jorga Repository">
+		<dir>
+			<info compressed="false">https://raw.githubusercontent.com/JorgaWetzel/kodi-addons/main/repo/addons.xml</info>
+			<checksum>https://raw.githubusercontent.com/JorgaWetzel/kodi-addons/main/repo/addons.xml.md5</checksum>
+			<datadir zip="true">https://raw.githubusercontent.com/JorgaWetzel/kodi-addons/main/repo/</datadir>
+		</dir>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<license>GPL-2.0-only</license>
+		<source>https://github.com/JorgaWetzel/kodi-addons</source>
+		<summary lang="de_DE">Reparierte Mediathek-Add-ons für ARD, ZDF und 3sat</summary>
+		<description lang="de_DE">Liefert Fassungen der Mediathek-Add-ons von sarbes, die gegen den aktuellen Stand der Sender-APIs repariert wurden. Das ZDF-Add-on holte sein Zugangstoken von einem abgeschalteten Server und funktionierte gar nicht mehr; bei 3sat liess ein einzelner unvollständiger Eintrag die gesamte Sendungsliste leer; die ARD-Mediathek brach bei Jugendschutzsperren mit einem Skriptfehler ab. Die Versionsnummern liegen über denen des offiziellen Kodi-Repositoriums, damit die Reparaturen bei einem Update nicht wieder überschrieben werden.</description>
+		<summary lang="en_GB">Repaired German public broadcaster add-ons for ARD, ZDF and 3sat</summary>
+		<description lang="en_GB">Provides versions of the Mediathek add-ons by sarbes repaired against the current state of the broadcasters' APIs.</description>
+		<assets>
+			<icon>icon.png</icon>
+		</assets>
+	</extension>
+</addon>

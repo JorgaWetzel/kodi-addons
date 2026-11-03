@@ -1,0 +1,7 @@
+# Add-on-Quellen behalten LF, damit ein Klon unter Windows nicht ZIPs mit anderen
+# Zeilenenden baut als ein Klon unter Linux.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.zip binary
