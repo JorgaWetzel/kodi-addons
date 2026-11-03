@@ -21,6 +21,7 @@ import pathlib
 import re
 import shutil
 import xml.etree.ElementTree as ET
+import subprocess
 import zipfile
 
 WURZEL = pathlib.Path(__file__).parent
@@ -41,6 +42,22 @@ def addon_ids():
 def version_von(addon_xml: pathlib.Path) -> tuple[str, str]:
     wurzel = ET.parse(addon_xml).getroot()
     return wurzel.get("id"), wurzel.get("version")
+
+
+def schon_veroeffentlicht(ziel: pathlib.Path) -> bool:
+    """True, wenn dieses ZIP schon im letzten Commit steht.
+
+    Geprueft wird gegen HEAD, nicht gegen den Index: eine nur vorgemerkte Datei
+    gehoert noch zur laufenden Arbeit und darf neu gebaut werden. Sobald eine
+    Fassung committet ist, gilt sie als ausgeliefert - unter demselben Namen
+    darf dann nie wieder ein anderer Inhalt erscheinen.
+    """
+    if not ziel.exists():
+        return False
+    relativ = ziel.relative_to(WURZEL).as_posix()
+    ergebnis = subprocess.run(["git", "cat-file", "-e", f"HEAD:{relativ}"],
+                              cwd=str(WURZEL), capture_output=True)
+    return ergebnis.returncode == 0
 
 
 def packe(ordner: pathlib.Path, ziel: pathlib.Path):
@@ -64,13 +81,23 @@ def main():
 
     teile = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', "<addons>"]
     gebaut = []
+    unveraendert = []
 
     for ordner in addon_ids():
         kennung, version = version_von(ordner / "addon.xml")
         if kennung != ordner.name:
             raise SystemExit(f"Ordner {ordner.name} traegt die ID {kennung} - muss gleich sein")
 
-        packe(ordner, REPO / kennung / f"{kennung}-{version}.zip")
+        ziel = REPO / kennung / f"{kennung}-{version}.zip"
+        if schon_veroeffentlicht(ziel):
+            # Eine Fassung, die bereits im Repository liegt, wird nicht neu
+            # gepackt. Sonst traegt derselbe Dateiname spaeter anderen Inhalt:
+            # wer das ZIP frueher geladen hat, haette stillschweigend etwas
+            # anderes als wer es heute laedt. Fuer eine Aenderung gehoert die
+            # Versionsnummer hoch.
+            unveraendert.append(f"{kennung} {version}")
+        else:
+            packe(ordner, ziel)
 
         # addon.xml ohne eigene XML-Deklaration in die Sammeldatei uebernehmen
         text = (ordner / "addon.xml").read_text(encoding="utf-8")
@@ -106,6 +133,10 @@ def main():
     print(f"{len(gebaut)} Add-ons gebaut:")
     for kennung, version in gebaut:
         print(f"  {kennung:<34} {version}")
+    if unveraendert:
+        print(f"\n{len(unveraendert)} schon veroeffentlicht, ZIP unveraendert gelassen:")
+        for eintrag in unveraendert:
+            print(f"  {eintrag}")
 
     # Gegenprobe ueber die Datei, nicht ueber den String: nur so faellt auf, wenn
     # das Schreiben die Bytes noch veraendert hat. Eine falsche Summe laesst Kodi

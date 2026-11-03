@@ -35,6 +35,17 @@ import paket
 from einrichtung import NAME, PROFIL, SICHERUNGEN, log
 
 
+# Diese Dateien wandern nicht mit, obwohl sie zur Sicherung des eigenen Geräts
+# gehören:
+#
+# guisettings.xml - sie trägt Webserver-Zugang, Geräte-UUID und die am
+#   Bildschirm hängenden Werte. Gebraucht wird sie ohnehin nicht: die
+#   Einstellungen stehen gefiltert in paket.json und werden über JSON-RPC
+#   gesetzt, weil Kodi eine kopierte Datei beim Beenden überschreibt.
+# profiles.xml - Profilnamen, Sperrcodes und Pfade des alten Geräts.
+NICHT_INS_PAKET = {'guisettings.xml', 'profiles.xml'}
+
+
 def _quelle_erfragen():
     """Fragt, woher ein Paket kommt. Gibt Pfad oder Adresse, sonst None."""
     wege = ['Datei suchen (Gerät, USB-Stick oder Netzwerk)',
@@ -82,11 +93,26 @@ def erzeuge(ziel=None, name=None, fortschritt=None, mit_luecken=True):
             log('beim Erfassen nicht erreichbar: %s' % ', '.join(ausgefallen),
                 xbmc.LOGWARNING)
 
+    # Die Einstellungen der einzelnen Add-ons - ohne sie steht auf dem neuen
+    # Gerät zwar jedes Add-on, aber keines so eingestellt wie hier.
+    konfig = [(a, 'userdata/' + r.replace(os.sep, '/'))
+              for a, r in einrichtung._konfig_pfade()
+              if os.path.basename(r) not in NICHT_INS_PAKET]
+    schon_drin = {r for _, r in konfig}
+    # Einige Add-on-Ordner stecken bereits vollständig in der Konfiguration
+    # (Startmenü, Skin). Die nicht ein zweites Mal schreiben.
+    addon_settings = [(pfad, inhalt)
+                      for pfad, inhalt in paket.addon_einstellungen(PROFIL)
+                      if pfad not in schon_drin]
+    beschreibung['addon_einstellungen'] = len(addon_settings)
+
     with zipfile.ZipFile(ziel, 'w', zipfile.ZIP_DEFLATED) as z:
         z.writestr(paket.PAKET_DATEI,
                    json.dumps(beschreibung, indent=2, ensure_ascii=False))
-        for absolut, relativ in einrichtung._konfig_pfade():
-            z.write(absolut, 'userdata/' + relativ.replace(os.sep, '/'))
+        for absolut, relativ in konfig:
+            z.write(absolut, relativ)
+        for pfad, inhalt in addon_settings:
+            z.writestr(pfad, inhalt)
         for i, kennung in enumerate(luecken):
             if fortschritt:
                 fortschritt.update(60 + int(35 * i / max(len(luecken), 1)),
@@ -96,9 +122,10 @@ def erzeuge(ziel=None, name=None, fortschritt=None, mit_luecken=True):
             except Exception as problem:
                 log('%s nicht einpackbar: %s' % (kennung, problem), xbmc.LOGWARNING)
 
-    log('Gerät erfasst: %s (%s Add-ons, davon %s mitgeliefert, %s Einstellungen)'
+    log('Gerät erfasst: %s (%s Add-ons, davon %s mitgeliefert, %s Kodi-Einstellungen, '
+        '%s Add-on-Einstellungen)'
         % (ziel, len(beschreibung['addons']), len(luecken),
-           len(beschreibung['einstellungen'])))
+           len(beschreibung['einstellungen']), len(addon_settings)))
     return ziel, beschreibung
 
 
@@ -111,9 +138,12 @@ def erzeuge_auf_wunsch():
         fortschritt.close()
 
     groesse = os.path.getsize(ziel) // 1024
-    zeilen = ['%s Add-ons, %s Einstellungen, %s Bezugsquellen.' % (
+    zeilen = ['%s Add-ons, %s Kodi-Einstellungen, %s Bezugsquellen.' % (
         len(beschreibung['addons']), len(beschreibung['einstellungen']),
-        len(beschreibung['kataloge']))]
+        len(beschreibung['kataloge'])),
+        'Dazu die Einstellungen von %s Add-ons - ohne Zugangsdaten: '
+        'Passwörter, Token und Konten bleiben auf diesem Gerät.'
+        % beschreibung.get('addon_einstellungen', 0)]
     if beschreibung.get('mitgeliefert'):
         zeilen.append('%s Add-ons sind aus keiner Quelle mehr zu bekommen und '
                       'reisen deshalb im Paket mit.' % len(beschreibung['mitgeliefert']))

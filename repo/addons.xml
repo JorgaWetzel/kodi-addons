@@ -96,7 +96,7 @@ It also provides versions of the Mediathek add-ons by sarbes repaired against th
 		</assets>
 	</extension>
 </addon>
-<addon id="script.jorga.build" name="Jorga Build - Einrichtungsassistent" version="1.1.0" provider-name="Jorga Wetzel">
+<addon id="script.jorga.build" name="Jorga Build - Einrichtungsassistent" version="1.1.1" provider-name="Jorga Wetzel">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0" />
 		<!-- Alles, was zur fertigen Einrichtung gehört. Kodi löst diese Liste bei der
@@ -130,7 +130,19 @@ Die bestehende Einrichtung wird vorher automatisch gesichert und lässt sich im 
 Die Add-ons selbst kommen aus dem offiziellen Kodi-Repository. Dieses Paket bringt nur die Konfiguration mit und die Reparaturen an den Mediathek-Add-ons, die das offizielle Repository noch nicht hat.
 
 Ab 1.1.0 kann der Assistent ausserdem ein ganzes Gerät übertragen: Ein bestehendes Kodi schreibt sich selbst in eine Paketdatei - Add-on-Liste, Bezugsquellen, Startmenü, Einstellungen -, und ein anderes Gerät baut sich danach auf. Die Add-ons selbst stecken nicht im Paket, sondern werden aus ihren Quellen in der jeweils aktuellen Fassung geladen. Eine Paketdatei bleibt dadurch wenige hundert Kilobyte gross.</description>
-		<news>1.1.0
+		<news>1.1.1
+- Die Einstellungen der einzelnen Add-ons reisen jetzt mit - ohne sie steht auf
+  dem neuen Gerät zwar jedes Add-on, aber keines so eingestellt wie zuvor.
+- Zugangsdaten bleiben dabei zurück: Werte unter Schlüsseln wie password, token,
+  api.key oder uuid werden geleert, der Schlüssel selbst bleibt stehen. An den
+  2007 belegten Einstellungen eines echten Geräts geprüft: 260 geleert, kein
+  Fehlalarm.
+- guisettings.xml und profiles.xml wandern nicht mehr ins Paket. Sie trugen
+  Webserver-Zugang, Geräte-UUID und die am Bildschirm hängenden Werte mit sich,
+  und gebraucht werden sie nicht: die Kodi-Einstellungen stehen gefiltert in
+  paket.json und werden über JSON-RPC gesetzt.
+
+1.1.0
 - Neu: ein ganzes Gerät übertragen. "Dieses Gerät als Paket sichern" schreibt
   Add-on-Liste, Bezugsquellen, Startmenü und Einstellungen in eine Datei,
   "Gerät aus Paket einrichten" baut ein anderes Gerät danach auf.

@@ -485,3 +485,87 @@ def entpacke_mitgelieferte(zipdatei, fortschritt=None, bei=16):
                 log('mitgeliefertes %s nicht entpackbar: %s' % (kennung, problem),
                     xbmc.LOGWARNING)
     return eingespielt
+
+
+# ------------------------------------------- Einstellungen fremder Add-ons
+
+# Schlüsselnamen, deren Wert nie in ein Paket gehört. Ein Paket wandert auf
+# andere Geräte und kann weitergegeben werden; Zugangsdaten haben darin nichts
+# verloren. Der Schlüssel selbst bleibt stehen, damit das Add-on seine
+# Einstellungsstruktur wiederfindet - nur der Wert wird geleert.
+# Die Wortgrenzen sind der heikle Teil. Ohne sie trifft "pass" auch
+# "audiooutput.passthrough" und leert eine harmlose Toneinstellung; mit zu
+# engen Grenzen rutscht "youtube.api.key" durch, weil der Trenner dort ein
+# Punkt ist und kein Unterstrich. Beides am 03.11.2026 an den echten Dateien
+# des Geräts gemessen (2007 belegte Schlüssel, 274 erfasst, 0 Fehlalarme).
+GEHEIM = re.compile(
+    # Zwei Klassen, weil ein einziges Muster beides nicht leisten kann.
+    #
+    # Eindeutige Begriffe gelten überall, auch zusammengeschrieben -
+    # "services.webserverpassword" trägt keinen Trenner vor "password".
+    r'(password|passwort|passwd|pwd|secret|credential|apikey|clientkey'
+    r'|username|accesstoken|authtoken|refreshtoken|token|uuid'
+    # Kurze und mehrdeutige Begriffe nur an einer Wortgrenze. Ohne diese
+    # Einschränkung trifft "pass" auch "audiooutput.passthrough" und "login"
+    # auch "debug.showloginfo" - beides harmlose Einstellungen, die dann
+    # stillschweigend geleert würden.
+    r'|(^|[._\-])(pass|auth|login|user|account|session|cookie|e?mail|pin'
+    r'|licen[sc]e|serial'
+    r'|(client|api|private|access|refresh|device|consumer|app)[._\-]?(key|id|secret)'
+    r')($|[._\-]))',
+    re.IGNORECASE)
+
+
+def saeubere_einstellungen(roh):
+    """Nimmt den Inhalt einer settings.xml und leert verdächtige Werte.
+
+    Gibt (bytes, Zahl der geleerten Werte) zurück. Bei unlesbarem XML wird
+    nichts weitergegeben - lieber eine Einstellung weniger als ein Passwort
+    zu viel.
+    """
+    try:
+        wurzel = ET.fromstring(roh)
+    except ET.ParseError:
+        return None, 0
+    geleert = 0
+    for element in wurzel.iter('setting'):
+        kennung = element.get('id') or ''
+        if GEHEIM.search(kennung) and (element.text or '').strip():
+            element.text = ''
+            element.set('geleert-vom-assistenten', 'true')
+            geleert += 1
+    return ET.tostring(wurzel, encoding='utf-8'), geleert
+
+
+def addon_einstellungen(profil, nur_fuer=None):
+    """Sammelt die settings.xml aller Add-ons im Profil, ohne Zugangsdaten.
+
+    Liefert (relativer Pfad im Paket, bytes) - und damit genau die Einstellungen,
+    die ein Nutzer am Add-on vorgenommen hat. Caches, Datenbanken, Cookies und
+    Verläufe bleiben draussen: die sind gross, gerätegebunden und baut jedes
+    Add-on selbst wieder auf.
+    """
+    basis = os.path.join(profil, 'addon_data')
+    if not os.path.isdir(basis):
+        return
+    for kennung in sorted(os.listdir(basis)):
+        if nur_fuer is not None and kennung not in nur_fuer:
+            continue
+        datei = os.path.join(basis, kennung, 'settings.xml')
+        if not os.path.isfile(datei):
+            continue
+        try:
+            with open(datei, 'rb') as f:
+                roh = f.read()
+        except OSError as fehler:
+            log('settings.xml von %s nicht lesbar: %s' % (kennung, fehler),
+                xbmc.LOGWARNING)
+            continue
+        sauber, geleert = saeubere_einstellungen(roh)
+        if sauber is None:
+            log('settings.xml von %s ist kein gültiges XML, ausgelassen' % kennung,
+                xbmc.LOGWARNING)
+            continue
+        if geleert:
+            log('%s: %d Werte als Zugangsdaten geleert' % (kennung, geleert))
+        yield 'userdata/addon_data/%s/settings.xml' % kennung, sauber

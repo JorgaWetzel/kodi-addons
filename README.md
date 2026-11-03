@@ -69,6 +69,22 @@ Zwei Dinge, die dabei leicht übersehen werden und hier gelöst sind:
 Was am Zielgerät nicht gefunden wird, meldet der Assistent namentlich, statt es
 zu verschweigen, und spielt alles Übrige trotzdem ein.
 
+**Die Einstellungen der einzelnen Add-ons reisen mit, ihre Zugangsdaten nicht.**
+Ohne die Add-on-Einstellungen steht auf dem neuen Gerät zwar jedes Add-on, aber
+keines so eingestellt wie zuvor. Mitgenommen wird deshalb je Add-on die
+`settings.xml` — und nur die; Caches, Datenbanken und Verläufe bleiben draussen.
+Werte unter Schlüsseln wie `password`, `token`, `api.key` oder `uuid` werden
+dabei geleert, der Schlüssel selbst bleibt stehen. Das Muster ist an den 2007
+belegten Einstellungen eines echten Geräts geprüft: 260 geleert, kein Fehlalarm
+— `audiooutput.passthrough` und `debug.showloginfo` bleiben unangetastet,
+obwohl „pass" und „login" darin vorkommen.
+
+Aus demselben Grund enthält ein Paket **keine** `guisettings.xml` und keine
+`profiles.xml`: die tragen Webserver-Zugang, Geräte-UUID und die am Bildschirm
+hängenden Werte mit sich. Gebraucht werden sie ohnehin nicht — die
+Kodi-Einstellungen stehen gefiltert in `paket.json` und werden über JSON-RPC
+gesetzt.
+
 ### Die mitgelieferte Einrichtung einspielen
 
 Die steckt fest in diesem Paket und braucht keine Vorarbeit:
@@ -162,7 +178,7 @@ Beide melden jetzt den Grund und lassen die Liste bedienbar.
 | Add-on | Version | Herkunft |
 |---|---|---|
 | `repository.jorga` | 2.0.0 | dieses Repository |
-| `script.jorga.build` | 1.1.0 | dieses Repository — Einrichtungsassistent |
+| `script.jorga.build` | 1.1.1 | dieses Repository — Einrichtungsassistent |
 | `plugin.video.mediatheken` | 1.0.0 | dieses Repository — Sammelpaket und Menü |
 | `plugin.video.zdf_de_lite` | 5.0.3 | sarbes 5.0.2, repariert |
 | `script.module.libzdf` | 5.0.3 | sarbes 5.0.2, repariert (ZDF **und** 3sat) |
