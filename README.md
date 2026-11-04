@@ -71,8 +71,10 @@ Pakete lassen sich dadurch zusammen verschieben. `kodi_min`/`kodi_max` blenden
 aus, was auf dem Gerät nicht läuft.
 
 **Ein eigener Katalog gehört dir allein.** Unter *Einstellungen → Build-Angebot*
-lässt sich eine zweite Adresse eintragen: ein Ordner auf dem NAS, ein eigener
-Webserver, eine Netzwerkfreigabe. Wer sein eigenes Gerät auf weitere Geräte
+lässt sich eine zweite Adresse eintragen — und zwar nicht nur `http://`:
+Kataloge und Pakete werden über Kodis eigene Dateischicht gelesen, also auch
+von `smb://` oder `nfs://`. Ein **Ordner auf dem NAS genügt**, ein Webserver
+ist nicht nötig. Wer sein eigenes Gerät auf weitere Geräte
 bringen will, legt sein Paket samt einer `builds.json` dorthin und hat dieselbe
 Auswahlliste — ohne dass das Paket irgendwo veröffentlicht wird. Der eingebaute
 Katalog dieses Repositories führt ausschliesslich Einrichtungen, die aus legalen
@@ -275,7 +277,7 @@ Beide melden jetzt den Grund und lassen die Liste bedienbar.
 | Add-on | Version | Herkunft |
 |---|---|---|
 | `repository.jorga` | 2.0.0 | dieses Repository |
-| `script.jorga.build` | 1.2.0 | dieses Repository — Einrichtungsassistent |
+| `script.jorga.build` | 1.2.1 | dieses Repository — Einrichtungsassistent |
 | `plugin.video.mediatheken` | 1.0.0 | dieses Repository — Sammelpaket und Menü |
 | `plugin.video.zdf_de_lite` | 5.0.3 | sarbes 5.0.2, repariert |
 | `script.module.libzdf` | 5.0.3 | sarbes 5.0.2, repariert (ZDF **und** 3sat) |

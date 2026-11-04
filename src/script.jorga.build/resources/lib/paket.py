@@ -59,10 +59,28 @@ MAX_ZIP = 400 * 1024 * 1024
 
 
 def _hole(url, grenze):
-    """Lädt eine Adresse und gibt die Bytes zurück. Entpackt gzip selbst."""
-    anfrage = Request(url, headers={'User-Agent': 'Kodi/21 Jorga-Build'})
-    with urlopen(anfrage, timeout=30) as antwort:
-        roh = antwort.read(grenze + 1)
+    """Lädt eine Adresse und gibt die Bytes zurück. Entpackt gzip selbst.
+
+    Für http und https nimmt diese Funktion urllib - das gibt Kontrolle über
+    Zeitgrenze, Kennung und Datenmenge. Alles andere geht über Kodis eigene
+    Dateischicht: damit sind auch `smb://`, `nfs://`, `special://` und
+    gewöhnliche Pfade erreichbar. Das ist kein Beiwerk, sondern der Weg, auf
+    dem ein eigener Katalog ohne Webserver funktioniert - eine
+    Netzwerkfreigabe genügt. Die Auswahl der Paketquelle nennt `smb://`
+    ausdrücklich; ohne diesen Zweig wäre das ein leeres Versprechen.
+    """
+    if url.split('://', 1)[0].lower() in ('http', 'https'):
+        anfrage = Request(url, headers={'User-Agent': 'Kodi/21 Jorga-Build'})
+        with urlopen(anfrage, timeout=30) as antwort:
+            roh = antwort.read(grenze + 1)
+    else:
+        datei = xbmcvfs.File(url)
+        try:
+            roh = datei.readBytes(grenze + 1)
+        finally:
+            datei.close()
+        if not roh:
+            raise IOError('nicht lesbar oder leer: %s' % url)
     if len(roh) > grenze:
         raise ValueError('Antwort über %d Bytes: %s' % (grenze, url))
     # Kataloge liegen oft als .gz vor, auch wenn die Adresse das nicht sagt.

@@ -33,6 +33,7 @@ import os
 import pathlib
 import re
 import subprocess
+import sys
 import time
 import xml.etree.ElementTree as ET
 import zipfile
@@ -160,14 +161,14 @@ def baue_standard(stand: str) -> pathlib.Path:
     return ziel
 
 
-def eintrag(zipdatei: pathlib.Path) -> dict:
+def eintrag(zipdatei: pathlib.Path, adresse: str) -> dict:
     """Baut den Katalogeintrag aus der paket.json im ZIP."""
     with zipfile.ZipFile(zipdatei) as z:
         p = json.loads(z.read("paket.json").decode("utf-8"))
     return {
         "name": p.get("name") or zipdatei.stem,
         "kurz": p.get("kurz", ""),
-        "adresse": "builds/" + zipdatei.name,
+        "adresse": adresse,
         "stand": p.get("stand") or (p.get("erstellt", "")[:10]),
         "bytes": zipdatei.stat().st_size,
         "kodi_min": p.get("kodi_min"),
@@ -176,20 +177,17 @@ def eintrag(zipdatei: pathlib.Path) -> dict:
     }
 
 
-def main():
-    stand = time.strftime("%Y-%m-%d")
-    baue_standard(stand)
+def schreibe_katalog(ziel: pathlib.Path, name: str, pakete: list,
+                     unterordner: str = "") -> dict:
+    """Schreibt eine builds.json aus den angegebenen Paketdateien.
 
-    # Je Build nur der neueste Stand im Katalog. Ältere ZIPs bleiben liegen,
-    # damit ein weitergegebener Link nicht bricht.
+    Je Build steht nur der neueste Stand im Katalog. Ältere ZIPs bleiben
+    liegen, damit ein weitergegebener Link nicht bricht.
+    """
     neueste = {}
-    übersprungen = []
-    for zipdatei in sorted(BUILDS.glob("*.zip")):
-        if ignoriert(zipdatei):
-            übersprungen.append(zipdatei.name)
-            continue
+    for zipdatei in pakete:
         try:
-            e = eintrag(zipdatei)
+            e = eintrag(zipdatei, unterordner + zipdatei.name)
         except (KeyError, ValueError, zipfile.BadZipFile) as problem:
             print(f"  {zipdatei.name}: keine lesbare paket.json ({problem})")
             continue
@@ -198,23 +196,72 @@ def main():
             neueste[e["name"]] = e
 
     katalog = {
-        "katalog": "Jorga Builds",
-        "stand": stand,
+        "katalog": name,
+        "stand": time.strftime("%Y-%m-%d"),
         "hinweis": "Fertige Kodi-Einrichtungen. Eine Adresse ohne Schema ist "
                    "relativ zu diesem Katalog zu lesen.",
         "builds": [neueste[n] for n in sorted(neueste)],
     }
-    with open(REPO / "builds.json", "w", encoding="utf-8", newline="\n") as f:
+    with open(ziel, "w", encoding="utf-8", newline="\n") as f:
         json.dump(katalog, f, indent=2, ensure_ascii=False)
         f.write("\n")
+    return katalog
+
+
+def eigener_katalog(ordner: str):
+    """Schreibt eine builds.json für einen eigenen Ordner voller Pakete.
+
+    Für Pakete, die nicht veröffentlicht werden: ein erfasstes Gerät gehört
+    dem, der es erzeugt hat. Ordner samt builds.json auf den eigenen Speicher
+    legen - NAS, Webserver, Netzwerkfreigabe - und die Adresse der builds.json
+    im Assistenten unter Einstellungen > Build-Angebot eintragen. Der
+    Assistent zeigt dann beide Kataloge in einer Liste.
+
+    Die Pakete liegen hier neben der builds.json, nicht in einem
+    Unterordner - ein eigener Ablageort ist meist genau ein Ordner.
+    """
+    wurzel = pathlib.Path(ordner)
+    if not wurzel.is_dir():
+        raise SystemExit(f"{wurzel} ist kein Ordner")
+    pakete = [p for p in sorted(wurzel.glob("*.zip"))]
+    if not pakete:
+        raise SystemExit(f"keine Paketdateien in {wurzel}")
+    katalog = schreibe_katalog(wurzel / "builds.json", "Eigene Builds", pakete)
+    print(f"{wurzel / 'builds.json'}: {len(katalog['builds'])} Build(s)")
+    for b in katalog["builds"]:
+        print(f"  {b['name']:<22} {b['stand']}  {b['bytes'] // 1024} KB  "
+              f"{b['addons']} Add-ons  -> {b['adresse']}")
+    print("\nDiesen Ordner auf den eigenen Speicher legen und die Adresse der "
+          "builds.json\nim Assistenten eintragen: Einstellungen > Build-Angebot.")
+
+
+def main():
+    if "--eigener" in sys.argv:
+        stelle = sys.argv.index("--eigener")
+        if stelle + 1 >= len(sys.argv):
+            raise SystemExit("--eigener braucht einen Ordner")
+        return eigener_katalog(sys.argv[stelle + 1])
+
+    stand = time.strftime("%Y-%m-%d")
+    baue_standard(stand)
+
+    pakete, ausgelassen = [], []
+    for zipdatei in sorted(BUILDS.glob("*.zip")):
+        # Was Git ignoriert, kommt nicht ins öffentliche Angebot: erfasste
+        # Gerätepakete heissen geraet-*.zip und stehen in .gitignore.
+        (ausgelassen if ignoriert(zipdatei) else pakete).append(zipdatei)
+    ausgelassen = [p.name for p in ausgelassen]
+
+    katalog = schreibe_katalog(REPO / "builds.json", "Jorga Builds", pakete,
+                               unterordner="builds/")
 
     print(f"\nbuilds.json: {len(katalog['builds'])} Build(s)")
     for b in katalog["builds"]:
         print(f"  {b['name']:<20} {b['stand']}  {b['bytes'] // 1024} KB  "
               f"{b['addons']} Add-ons  Kodi {b['kodi_min']}-{b['kodi_max']}")
-    if übersprungen:
+    if ausgelassen:
         print(f"\nnicht ins Angebot (von Git ignoriert): "
-              f"{', '.join(übersprungen)}")
+              f"{', '.join(ausgelassen)}")
 
 
 if __name__ == "__main__":
