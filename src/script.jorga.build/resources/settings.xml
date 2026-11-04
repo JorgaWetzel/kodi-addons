@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Einstellungen des Assistenten. Bewusst wenige: alles, was zu einer
+     Einrichtung gehört, steht im Paket und nicht hier.
+
+     Der eigene Katalog ist der wichtigste Punkt. Eingebaut ist nur das
+     öffentliche Angebot dieses Projekts; wer sein eigenes Gerät auf weitere
+     Geräte bringen will, legt sein Paket samt builds.json auf einen eigenen
+     Speicher - NAS, Webserver, Netzwerkfreigabe - und trägt die Adresse hier
+     ein. Was dort liegt, bleibt bei ihm. -->
+<settings version="1">
+	<section id="script.jorga.build">
+		<category id="angebot" label="Build-Angebot">
+			<group id="1" label="Eigener Katalog">
+				<setting id="eigener_katalog" type="string" label="Adresse der eigenen builds.json">
+					<level>0</level>
+					<default/>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control type="edit" format="string">
+						<heading>http://..., https://... oder smb://...</heading>
+					</control>
+				</setting>
+			</group>
+			<group id="2" label="Hinweise">
+				<setting id="beim_start_fragen" type="boolean" label="Auf einem nicht eingerichteten Gerät beim Start zum Einrichten einladen">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+				<setting id="auf_stand_hinweisen" type="boolean" label="Darauf hinweisen, wenn im Katalog ein neuerer Stand steht">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+			</group>
+		</category>
+	</section>
+</settings>

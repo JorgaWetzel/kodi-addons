@@ -1,0 +1,17 @@
+{
+  "katalog": "Jorga Builds",
+  "stand": "2026-11-04",
+  "hinweis": "Fertige Kodi-Einrichtungen. Eine Adresse ohne Schema ist relativ zu diesem Katalog zu lesen.",
+  "builds": [
+    {
+      "name": "Jorga Standard",
+      "kurz": "Mediatheken von ARD, ZDF, SRF, ARTE und 3sat, Skin Mimic-LR mit fertigem Startmenü",
+      "adresse": "builds/jorga-standard-2026-11-04.zip",
+      "stand": "2026-11-04",
+      "bytes": 6305,
+      "kodi_min": 21,
+      "kodi_max": 22,
+      "addons": 12
+    }
+  ]
+}

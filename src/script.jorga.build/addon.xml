@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.jorga.build" name="Jorga Build - Einrichtungsassistent" version="1.1.1" provider-name="Jorga Wetzel">
+<addon id="script.jorga.build" name="Jorga Build - Einrichtungsassistent" version="1.2.0" provider-name="Jorga Wetzel">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0" />
 		<!-- Alles, was zur fertigen Einrichtung gehört. Kodi löst diese Liste bei der
@@ -21,6 +21,11 @@
 	<extension point="xbmc.python.script" library="default.py">
 		<provides>executable</provides>
 	</extension>
+	<!-- Der Dienst meldet sich auf einem noch nicht eingerichteten Gerät einmal
+	     von selbst. Ein Assistent, den man erst unter Add-ons suchen muss, hilft
+	     genau dort nicht, wo er gebraucht wird. Abschaltbar in den Einstellungen;
+	     auf einem eingerichteten Gerät sagt er von sich aus nichts. -->
+	<extension point="xbmc.service" library="service.py" />
 	<extension point="xbmc.addon.metadata">
 		<platform>all</platform>
 		<license>GPL-2.0-only</license>
@@ -32,8 +37,34 @@ Die bestehende Einrichtung wird vorher automatisch gesichert und lässt sich im 
 
 Die Add-ons selbst kommen aus dem offiziellen Kodi-Repository. Dieses Paket bringt nur die Konfiguration mit und die Reparaturen an den Mediathek-Add-ons, die das offizielle Repository noch nicht hat.
 
+Ab 1.2.0 zeigt der Assistent ein Angebot fertiger Einrichtungen aus dem Netz: auswählen, laden, einspielen. Ein eigener Katalog lässt sich in den Einstellungen eintragen, um eigene Pakete auf dieselbe Weise auf weitere Geräte zu bringen.
+
 Ab 1.1.0 kann der Assistent ausserdem ein ganzes Gerät übertragen: Ein bestehendes Kodi schreibt sich selbst in eine Paketdatei - Add-on-Liste, Bezugsquellen, Startmenü, Einstellungen -, und ein anderes Gerät baut sich danach auf. Die Add-ons selbst stecken nicht im Paket, sondern werden aus ihren Quellen in der jeweils aktuellen Fassung geladen. Eine Paketdatei bleibt dadurch wenige hundert Kilobyte gross.</description>
-		<news>1.1.1
+		<news>1.2.0
+- Neu: ein Build-Angebot. Der Assistent liest eine Liste fertiger
+  Einrichtungen aus dem Netz und zeigt sie zur Auswahl - drei Tastendrücke
+  statt einer eingetippten Adresse. Das ist der Weg für ein Gerät, das jemand
+  anders einrichten soll.
+- Ein eigener Katalog lässt sich in den Einstellungen eintragen. Wer sein
+  Gerät auf weitere Geräte bringen will, legt sein Paket auf einen eigenen
+  Speicher (NAS, Webserver, Freigabe) und trägt die Adresse einmal ein.
+- "Frisch einrichten" entfernt die bisherige Einrichtung, bevor die neue
+  kommt: Startmenü, Favoriten, Quellen, Add-on-Einstellungen und die
+  geänderten Kodi-Einstellungen. Die Add-ons selbst bleiben - den laufenden
+  Skin im Betrieb zu löschen, bringt Kodi zum Absturz.
+- Neu: Aufräumen. Heruntergeladene Add-on-Pakete und Zwischendateien, auf
+  Wunsch auch der Bildspeicher. Auf einem Fernsehgerät mit knappem Speicher
+  der Unterschied zwischen laufend und abstürzend.
+- Ein Paket ist nicht mehr an die Kodi-Fassung seines Ursprungsgeräts
+  gebunden: Katalogadressen, die die Kodi-Generation im Pfad tragen
+  (.../omega/addons.xml), werden auf die Generation dieses Geräts
+  umgestellt. Führt ein Repository den neuen Zweig noch nicht, wird der alte
+  genommen.
+- Der Dienst lädt auf einem nicht eingerichteten Gerät beim Start einmal zum
+  Einrichten ein und weist darauf hin, wenn im Katalog ein neuerer Stand
+  steht. Eingespielt wird nichts von allein.
+
+1.1.1
 - Die Einstellungen der einzelnen Add-ons reisen jetzt mit - ohne sie steht auf
   dem neuen Gerät zwar jedes Add-on, aber keines so eingestellt wie zuvor.
 - Zugangsdaten bleiben dabei zurück: Werte unter Schlüsseln wie password, token,

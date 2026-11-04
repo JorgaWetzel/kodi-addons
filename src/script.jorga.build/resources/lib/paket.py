@@ -28,6 +28,7 @@ import gzip
 import io
 import json
 import os
+import platform
 import re
 import shutil
 import time
@@ -80,28 +81,89 @@ def _hoehere_fassung(a, b):
         return str(a) > str(b)
 
 
-def lies_katalog(katalog):
+def plattform():
+    """Die Plattformkennung dieses Geräts, wie die Repositories sie benennen.
+
+    Binäre Add-ons - Streaming-Module, PVR-Schnittstellen, Eingabegeräte,
+    Bildschirmschoner - gibt es je Betriebssystem und Prozessor einmal. Das
+    offizielle Repository führt sie deshalb sechsfach im Katalog
+    (android-aarch64, android-armv7, windows-x86_64, windows-i686, osx-arm64,
+    osx-x86_64) und legt ihre ZIPs in einem Verzeichnis ab, dessen Name die
+    Plattform trägt.
+
+    Für Linux gibt es dort nichts: binäre Add-ons kommen auf Linux über die
+    Paketverwaltung der Distribution. Dann liefert diese Funktion None, und
+    lies_katalog lässt solche Add-ons weg, statt eine Adresse zu erfinden.
+    """
+    maschine = platform.machine().lower()
+    if xbmc.getCondVisibility('System.Platform.Android'):
+        return 'android-%s' % ('aarch64' if maschine in ('aarch64', 'arm64')
+                               else 'armv7')
+    if xbmc.getCondVisibility('System.Platform.Windows'):
+        return 'windows-%s' % ('x86_64' if maschine in ('amd64', 'x86_64')
+                               else 'i686')
+    if xbmc.getCondVisibility('System.Platform.OSX'):
+        return 'osx-%s' % ('arm64' if maschine in ('arm64', 'aarch64')
+                           else 'x86_64')
+    return None
+
+
+def lies_katalog(katalog, eigene_plattform=None):
     """Liest eine addons.xml und gibt {kennung: eintrag} zurück.
 
     Ein Eintrag hält Fassung, Herunterladeadresse und Abhängigkeiten.
+
+    Trägt der Katalog einen Rückfall (siehe fuer_diese_kodi), wird dieser
+    genommen, sobald die angepasste Adresse nicht antwortet.
+
+    Plattformgebundene Add-ons stehen mehrfach im Katalog, je Plattform
+    einmal. Übernommen wird nur der Eintrag für dieses Gerät, und seine
+    Adresse zeigt in das Verzeichnis mit der Plattform im Namen:
+
+        .../inputstream.adaptive+android-aarch64/inputstream.adaptive-21.5.25.zip
+
+    Ohne diese Unterscheidung baut sich eine Adresse ohne Plattform zusammen,
+    die es nicht gibt - am 04.11.2026 gegen das offizielle Repository
+    gemessen: 404 für inputstream.adaptive, pvr.iptvsimple,
+    inputstream.ffmpegdirect, peripheral.joystick und jeden
+    Bildschirmschoner.
     """
-    roh = _hole(katalog['addons_xml'], MAX_KATALOG)
+    try:
+        roh = _hole(katalog['addons_xml'], MAX_KATALOG)
+        datadir = katalog['datadir'].rstrip('/')
+    except Exception as fehler:
+        rueckfall = katalog.get('rueckfall')
+        if not rueckfall:
+            raise
+        log('%s: %s nicht erreichbar (%s), nehme %s'
+            % (katalog.get('id', '?'), katalog['addons_xml'], fehler,
+               rueckfall['addons_xml']), xbmc.LOGWARNING)
+        roh = _hole(rueckfall['addons_xml'], MAX_KATALOG)
+        datadir = rueckfall['datadir'].rstrip('/')
     wurzel = ET.fromstring(roh)
-    datadir = katalog['datadir'].rstrip('/')
+    if eigene_plattform is None:
+        eigene_plattform = plattform()
     inhalt = {}
     for addon in wurzel.iter('addon'):
         kennung = addon.get('id')
         fassung = addon.get('version')
         if not kennung or not fassung:
             continue
+        plattformen = [p.text for p in addon.iter('platform') if p.text]
+        ordner = kennung
+        if plattformen and 'all' not in plattformen:
+            if not eigene_plattform or eigene_plattform not in plattformen:
+                continue              # für ein anderes Gerät gebaut
+            ordner = '%s+%s' % (kennung, eigene_plattform)
         braucht = [i.get('addon') for i in addon.iter('import')
                    if i.get('addon') and not KODI_EIGEN.match(i.get('addon'))
                    and i.get('optional') != 'true']
         inhalt[kennung] = {
             'version': fassung,
-            'url': '%s/%s/%s-%s.zip' % (datadir, kennung, kennung, fassung),
+            'url': '%s/%s/%s-%s.zip' % (datadir, ordner, kennung, fassung),
             'braucht': braucht,
             'quelle': katalog.get('id', katalog['addons_xml']),
+            'plattform': eigene_plattform if ordner != kennung else '',
         }
     return inhalt
 
@@ -114,12 +176,17 @@ def sammle_kataloge(kataloge, fortschritt=None, von=0, bis=20):
     eine Einrichtung brauchbar, wenn eine Fremdquelle verschwindet.
     """
     angebot, ausgefallen = {}, []
+    eigene_plattform = plattform()
+    if not eigene_plattform:
+        log('keine Plattformkennung für dieses Gerät - binäre Add-ons bleiben '
+            'aussen vor (auf Linux kommen sie aus der Paketverwaltung)',
+            xbmc.LOGINFO)
     for i, katalog in enumerate(kataloge):
         if fortschritt:
             fortschritt.update(von + int((bis - von) * i / max(len(kataloge), 1)),
                                'Lese Katalog: %s' % katalog.get('id', ''))
         try:
-            inhalt = lies_katalog(katalog)
+            inhalt = lies_katalog(katalog, eigene_plattform)
         except Exception as fehler:       # Netz, DNS, kaputtes XML
             log('Katalog nicht lesbar (%s): %s' % (katalog.get('id'), fehler),
                 xbmc.LOGWARNING)
@@ -336,6 +403,54 @@ def offizieller_katalog(hauptversion):
             'datadir': basis}
 
 
+# Der Generationsname als eigenes Pfadstück. Die Wortgrenzen sind nötig, damit
+# nicht mitten in einem anderen Wort ersetzt wird.
+GENERATION_IM_PFAD = re.compile(
+    r'(?<![a-z0-9])(%s)(?![a-z0-9])' % '|'.join(KODI_GENERATION.values()),
+    re.IGNORECASE)
+
+
+def fuer_diese_kodi(kataloge, hauptversion=None):
+    """Passt die Katalogadressen an die Kodi-Generation dieses Geräts an.
+
+    Ein Paket trägt die Kataloge des Geräts, auf dem es entstanden ist. Viele
+    Repositories führen aber je Kodi-Generation einen eigenen Zweig und
+    benennen ihn im Pfad: `repo.kodinerds.net/addons/omega/addons.xml`,
+    `mirrors.kodi.tv/addons/omega`. Wird ein auf Kodi 21 erfasstes Paket auf
+    Kodi 22 eingespielt, zeigen diese Adressen weiter auf omega und liefern
+    Add-ons, die dort nicht laufen - das Paket wäre an die Kodi-Fassung seines
+    Ursprungsgeräts gebunden.
+
+    Ersetzt wird deshalb der Generationsname in Katalog und Ablage. Die
+    ursprüngliche Adresse bleibt als `rueckfall` am Eintrag hängen: führt ein
+    Repository den Zweig für diese Generation noch nicht, nimmt lies_katalog
+    wieder den alten - ein älteres Add-on ist besser als keines.
+    """
+    eigene = hauptversion or int(
+        xbmc.getInfoLabel('System.BuildVersion').split('.')[0] or 0)
+    name = KODI_GENERATION.get(eigene)
+    if not name:
+        return list(kataloge)
+
+    angepasst = []
+    for katalog in kataloge:
+        neu = dict(katalog)
+        getroffen = False
+        for feld in ('addons_xml', 'datadir'):
+            wert = katalog.get(feld, '')
+            ersetzt = GENERATION_IM_PFAD.sub(name, wert)
+            if ersetzt != wert:
+                neu[feld] = ersetzt
+                getroffen = True
+        if getroffen:
+            neu['rueckfall'] = {'addons_xml': katalog['addons_xml'],
+                                'datadir': katalog['datadir']}
+            log('%s auf Kodi-Generation %s umgestellt: %s'
+                % (katalog.get('id', '?'), name, neu['addons_xml']))
+        angepasst.append(neu)
+    return angepasst
+
+
 def _kataloge_des_geraets():
     """Liest aus den installierten Repositories deren Bezugsadressen.
 
@@ -411,6 +526,13 @@ NICHT_UEBERNEHMEN = {
     'services.deviceuuid': 'je Gerät eigen, Kodi erzeugt sie selbst',
     'services.webserverpassword': 'Passwort',
     'services.webserverusername': 'Zugangsdaten',
+    # Der Schalter selbst gehört dazu, nicht nur die Zugangsdaten: ein Paket
+    # darf auf einem fremden Gerät keinen Netzwerkdienst aufmachen. Da
+    # Benutzername und Passwort bewusst zurückbleiben, stünde die
+    # Fernsteuerung dort sonst ohne Zugangsschutz offen. Wer sie will,
+    # schaltet sie selbst ein und setzt dabei sein eigenes Passwort.
+    'services.webserver': 'Fernzugang gehört pro Gerät entschieden',
+    'services.webserverport': 'gehört zum Fernzugang des Geräts',
     'services.esallinterfaces': 'Fernzugriff gehört pro Gerät entschieden',
     'videoscreen.resolution': 'hängt am Bildschirm, falscher Wert = schwarzes Bild',
     'videoscreen.screenmode': 'hängt am Bildschirm',

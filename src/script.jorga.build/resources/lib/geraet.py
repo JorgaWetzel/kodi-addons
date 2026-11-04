@@ -31,6 +31,7 @@ import xbmcgui
 
 import einrichtung
 import paket
+import pflege
 
 from einrichtung import NAME, PROFIL, SICHERUNGEN, log
 
@@ -195,18 +196,23 @@ def _konfiguration_einspielen(zipdatei, ordner, fortschritt=None, von=85, bis=92
     return anzahl
 
 
-def spiele_ein(quelle=None, nachfragen=True):
+def spiele_ein(quelle=None, nachfragen=True, vorab_bestaetigt=False, frisch=False):
     """Richtet dieses Gerät nach einem Paket ein.
 
     Reihenfolge und ihr Grund:
       1. Bestehendes sichern - der Weg zurück muss offen bleiben.
-      2. Kataloge lesen, Abhängigkeiten auflösen, Add-ons laden. Zuerst, weil
+      2. Auf Wunsch frisch machen: die alte Einrichtung weg, bevor die neue
+         kommt. Die Add-ons bleiben dabei stehen (siehe pflege).
+      3. Kataloge lesen, Abhängigkeiten auflösen, Add-ons laden. Zuerst, weil
          die Konfiguration sich auf Add-ons bezieht, die es dann schon gibt.
-      3. Konfigurationsdateien ins Profil.
-      4. Einstellungen über JSON-RPC - eine kopierte guisettings.xml würde Kodi
+      4. Konfigurationsdateien ins Profil.
+      5. Einstellungen über JSON-RPC - eine kopierte guisettings.xml würde Kodi
          beim Beenden mit dem Stand aus dem Speicher überschreiben.
-      5. Die erzeugte Menüdatei des Skins löschen, damit das Startmenü aus den
+      6. Die erzeugte Menüdatei des Skins löschen, damit das Startmenü aus den
          eingespielten Dateien neu entsteht, und zum Neustart raten.
+
+    Mit vorab_bestaetigt entfällt die Rückfrage: der Aufrufer hat sie schon
+    gestellt (so fragt das Build-Angebot in katalog.py einmal statt zweimal).
     """
     if quelle is None:
         quelle = _quelle_erfragen()
@@ -221,28 +227,43 @@ def spiele_ein(quelle=None, nachfragen=True):
         lokal = paket.hole_paket(quelle, os.path.join(SICHERUNGEN, 'geladen'))
         beschreibung, zipdatei = paket.lies_paket(lokal)
 
-        if nachfragen:
+        if nachfragen and not vorab_bestaetigt:
             fortschritt.close()
             fortschritt = None
-            if not xbmcgui.Dialog().yesno(
-                    NAME,
-                    '%s[CR]erstellt am %s[CR][CR]%s Add-ons, %s Einstellungen.[CR][CR]'
-                    'Vorhandene Add-ons bleiben, fehlende werden nachgeladen. '
-                    'Deine jetzige Einrichtung wird vorher gesichert.[CR][CR]'
-                    'Jetzt einrichten?' % (
-                        beschreibung.get('name', 'Paket'),
-                        beschreibung.get('erstellt', '?'),
-                        len(beschreibung.get('addons', [])),
-                        len(beschreibung.get('einstellungen', {}))),
-                    nolabel='Abbrechen', yeslabel='Einrichten'):
+            # Drei Wege statt zwei: wer ein fremd eingerichtetes Gerät
+            # übernimmt, will die alte Einrichtung meist nicht behalten.
+            antwort = xbmcgui.Dialog().yesnocustom(
+                NAME,
+                '%s[CR]erstellt am %s[CR][CR]%s Add-ons, %s Einstellungen.[CR][CR]'
+                'Vorhandene Add-ons bleiben, fehlende werden nachgeladen. '
+                'Deine jetzige Einrichtung wird vorher gesichert.[CR][CR]'
+                '"Frisch" entfernt die bisherige Einrichtung zuerst.' % (
+                    beschreibung.get('name', 'Paket'),
+                    beschreibung.get('erstellt', '?'),
+                    len(beschreibung.get('addons', [])),
+                    len(beschreibung.get('einstellungen', {}))),
+                customlabel='Frisch einrichten',
+                nolabel='Abbrechen', yeslabel='Einrichten')
+            if antwort == 2:               # die eigene Schaltfläche
+                frisch = True
+            elif antwort != 1:             # Nein, Abbruch oder geschlossen
                 return None
             fortschritt = xbmcgui.DialogProgress()
             fortschritt.create(NAME, 'Bestehende Einrichtung sichern ...')
 
         bericht['sicherung'] = einrichtung.sichere()
 
+        if frisch:
+            if fortschritt:
+                fortschritt.update(1, 'Bisherige Einrichtung entfernen ...')
+            bericht['frisch'] = pflege.frisch_machen(nachfragen=False,
+                                                     sichern=False)
+
+        # Die Kataloge auf die Kodi-Generation dieses Geräts umstellen: ein
+        # Paket von Kodi 21 soll auch auf Kodi 22 die richtigen Zweige holen.
         angebot, ausgefallen = paket.sammle_kataloge(
-            beschreibung.get('kataloge', []), fortschritt, 2, 15)
+            paket.fuer_diese_kodi(beschreibung.get('kataloge', [])),
+            fortschritt, 2, 15)
 
         # Zuerst die mitgereisten Add-ons: sie stehen in keinem Katalog, und
         # andere Add-ons können von ihnen abhängen.
@@ -309,6 +330,11 @@ def _ergebnis_melden(bericht, nachfragen):
         len(bericht.get('neu', [])), len(bericht.get('schon_da', []))),
         '%s Konfigurationsdateien, %s Einstellungen gesetzt.' % (
             bericht.get('dateien', 0), bericht.get('gesetzt', 0))]
+    if bericht.get('frisch'):
+        zeilen.insert(0, 'Die bisherige Einrichtung wurde entfernt (%s Posten, '
+                         '%s Einstellungen auf Standard).' % (
+                             bericht['frisch'].get('geloescht', 0),
+                             bericht['frisch'].get('zurueckgesetzt', 0)))
     if bericht.get('mitgeliefert'):
         zeilen.append('%s davon kamen aus dem Paket selbst - ihre Quelle gibt '
                       'es nicht mehr.' % len(bericht['mitgeliefert']))

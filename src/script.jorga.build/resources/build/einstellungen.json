@@ -29,8 +29,6 @@
   "pvrplayback.confirmchannelswitch": "false",
   "pvrplayback.enableradiords": "false",
   "pvrplayback.signalquality": "false",
-  "services.webserver": "true",
-  "services.webserverport": "8081",
   "services.wsdiscovery": "false",
   "subtitles.downloadfirst": "true",
   "subtitles.languages": "German",

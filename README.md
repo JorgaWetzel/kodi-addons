@@ -35,8 +35,63 @@ mit und fasst sie in einem Menü zusammen, ohne Einstellungen anzutasten.
 
 ## Der Einrichtungsassistent
 
-Unter **Add-ons → Programm-Add-ons → Jorga Build**. Der Assistent kann zweierlei,
+Unter **Add-ons → Programm-Add-ons → Jorga Build**. Der Assistent kann dreierlei,
 und das sind verschiedene Dinge.
+
+### Eine Einrichtung aus dem Angebot installieren
+
+Der kürzeste Weg auf einem fremden Gerät: **Einrichtung aus dem Angebot
+installieren**. Der Assistent liest eine Liste fertiger Einrichtungen aus dem
+Netz, zeigt sie mit Namen, Stand und Grösse, lädt die gewählte und spielt sie
+ein. Drei Tastendrücke — niemand tippt eine Repository-Adresse auf einer
+Fernbedienung ein.
+
+Der Katalog ist eine einzige JSON-Datei; fest eingebaut ist
+[`repo/builds.json`](repo/builds.json) aus diesem Repository.
+
+```json
+{
+  "katalog": "Jorga Builds",
+  "builds": [
+    {
+      "name": "Jorga Standard",
+      "kurz": "Mediatheken von ARD, ZDF, SRF, ARTE und 3sat, Skin Mimic-LR",
+      "adresse": "builds/jorga-standard-2026-11-04.zip",
+      "stand": "2026-11-04",
+      "bytes": 6298,
+      "kodi_min": 21,
+      "kodi_max": 22
+    }
+  ]
+}
+```
+
+Eine Adresse ohne `https://` wird relativ zum Katalog gelesen — Katalog und
+Pakete lassen sich dadurch zusammen verschieben. `kodi_min`/`kodi_max` blenden
+aus, was auf dem Gerät nicht läuft.
+
+**Ein eigener Katalog gehört dir allein.** Unter *Einstellungen → Build-Angebot*
+lässt sich eine zweite Adresse eintragen: ein Ordner auf dem NAS, ein eigener
+Webserver, eine Netzwerkfreigabe. Wer sein eigenes Gerät auf weitere Geräte
+bringen will, legt sein Paket samt einer `builds.json` dorthin und hat dieselbe
+Auswahlliste — ohne dass das Paket irgendwo veröffentlicht wird. Der eingebaute
+Katalog dieses Repositories führt ausschliesslich Einrichtungen, die aus legalen
+Quellen bestehen; was sonst auf einem Gerät steht, gehört auf den eigenen
+Speicher, nicht hierher.
+
+Dazu zwei Punkte, die das Angebot erst brauchbar machen:
+
+* **Frisch einrichten.** Jede Einrichtung lässt sich auch mit der Schaltfläche
+  *Frisch* starten: Startmenü, Favoriten, Quellen, Tastenbelegung, alle
+  Add-on-Einstellungen und die geänderten Kodi-Einstellungen gehen vorher weg —
+  richtig für ein Gerät, das jemand anders eingerichtet hat. Gesichert wird
+  trotzdem zuerst. Die Add-ons selbst bleiben stehen: den laufenden Skin oder
+  ein geladenes Python-Modul im Betrieb zu löschen, bringt Kodi zum Absturz,
+  und die Einrichtung überschreibt ohnehin alles, was die Oberfläche bestimmt.
+* **Aufräumen.** Kodi behält jedes heruntergeladene Add-on-ZIP dauerhaft, und
+  der Bildspeicher für Cover wächst unbegrenzt. Unter *Pflege und Sicherung*
+  steht beides mit Grössenangabe; der Bildspeicher wird einzeln abgefragt, weil
+  Kodi danach neu starten muss.
 
 ### Ein ganzes Gerät übertragen
 
@@ -46,7 +101,7 @@ sich danach auf — mit seinen Add-ons, seinem Startmenü, seinen Einstellungen.
 | Punkt | Was er tut |
 |---|---|
 | Dieses Gerät als Paket sichern | Schreibt Add-on-Liste, Bezugsquellen, Startmenü, Favoriten und Einstellungen in **eine** Datei |
-| Gerät aus Paket einrichten | Baut dieses Gerät nach einem Paket auf: lädt die Add-ons, spielt die Konfiguration ein |
+| Gerät aus Paket einrichten | Baut dieses Gerät nach einem Paket auf — aus einer Datei, von einem USB-Stick oder über eine Adresse |
 | Was steckt in einem Paket? | Listet Inhalt und Herkunft auf, bevor etwas passiert |
 
 **Die Add-ons selbst stecken nicht im Paket.** Ein gewachsenes Gerät trägt schnell
@@ -99,19 +154,61 @@ Die steckt fest in diesem Paket und braucht keine Vorarbeit:
 Für das Einrichten mehrerer Geräte geht beides auch ohne Menü:
 
 ```
+RunScript(script.jorga.build,angebot)
+RunScript(script.jorga.build,stand)
 RunScript(script.jorga.build,geraet-erfassen)
 RunScript(script.jorga.build,geraet-einspielen,<Pfad oder Adresse>,ohne-rueckfrage)
+RunScript(script.jorga.build,geraet-einspielen,<Adresse>,frisch)
 RunScript(script.jorga.build,einspielen,ohne-rueckfrage)
 RunScript(script.jorga.build,sichern)
 RunScript(script.jorga.build,zurueckholen)
+RunScript(script.jorga.build,aufraeumen,ohne-rueckfrage)
+RunScript(script.jorga.build,frisch)
 ```
+
+Auf einem Gerät, auf dem noch nichts eingerichtet ist, meldet sich der Assistent
+beim Start **einmal** von selbst und fragt, ob er einrichten soll — ein
+Assistent, den man erst unter Add-ons suchen muss, hilft genau dort nicht, wo er
+gebraucht wird. Wer „Nicht mehr fragen" wählt, hat Ruhe; auf einem eingerichteten
+Gerät sagt er von sich aus nichts. Steht im Katalog später ein neuerer Stand des
+eingespielten Builds, erscheint eine Benachrichtigung — eingespielt wird nichts
+von allein.
 
 Sicherungen landen unter `userdata/jorga-sicherungen/` und umfassen Einstellungen,
 Startmenü, Favoriten, Quellen, Tastenbelegungen und Skin-Einstellungen. Nicht
 dabei sind `Database/` und `Thumbnails/` — die baut Kodi selbst neu auf und sie
 machen den Löwenanteil der Datenmenge aus.
 
-### Drei Dinge, die der Assistent bewusst anders macht
+### Fünf Dinge, die der Assistent bewusst anders macht
+
+**Binäre Add-ons liegen je Plattform an einer anderen Adresse.** Streaming-Module,
+PVR-Schnittstellen, Eingabegeräte und Bildschirmschoner gibt es für jedes
+Betriebssystem und jeden Prozessor einmal. Das offizielle Repository führt sie
+deshalb sechsfach im Katalog und legt ihre ZIPs in einem Verzeichnis ab, dessen
+Name die Plattform trägt — der Dateiname dagegen nicht:
+
+```
+.../omega/inputstream.adaptive+android-aarch64/inputstream.adaptive-21.5.25.zip
+```
+
+Wer die Adresse ohne diese Unterscheidung zusammensetzt, bekommt 404. Am
+04.11.2026 gemessen: betroffen waren `inputstream.adaptive`,
+`inputstream.ffmpegdirect`, `inputstream.rtmp`, `pvr.iptvsimple`,
+`peripheral.joystick` und jeder Bildschirmschoner — bei einem Gerät mit
+Streaming und IPTV also genau das, worauf es ankommt. Der Assistent bestimmt die
+Plattform des laufenden Geräts und nimmt nur den passenden Eintrag. Für Linux
+nennt das offizielle Repository keine Binär-Add-ons; dort kommen sie aus der
+Paketverwaltung der Distribution, und der Assistent lässt sie weg, statt eine
+Adresse zu erfinden.
+
+**Ein Paket ist nicht an die Kodi-Fassung seines Ursprungsgeräts gebunden.** Viele
+Repositories führen je Kodi-Generation einen eigenen Zweig und benennen ihn im
+Pfad (`repo.kodinerds.net/addons/omega/addons.xml`). Ein auf Kodi 21 erfasstes
+Paket würde auf Kodi 22 weiter *omega* holen und Add-ons einspielen, die dort
+nicht laufen. Der Assistent stellt den Generationsnamen in Katalog und Ablage auf
+die Generation des Zielgeräts um und behält die ursprüngliche Adresse als
+Rückfall: führt ein Repository den neuen Zweig noch nicht, wird wieder der alte
+genommen — ein älteres Add-on ist besser als keines.
 
 **Einstellungen werden nicht als Datei kopiert, sondern gesetzt.** Kodi hält seine
 Einstellungen im Speicher und schreibt sie beim Beenden zurück. Eine kopierte
@@ -178,11 +275,16 @@ Beide melden jetzt den Grund und lassen die Liste bedienbar.
 | Add-on | Version | Herkunft |
 |---|---|---|
 | `repository.jorga` | 2.0.0 | dieses Repository |
-| `script.jorga.build` | 1.1.1 | dieses Repository — Einrichtungsassistent |
+| `script.jorga.build` | 1.2.0 | dieses Repository — Einrichtungsassistent |
 | `plugin.video.mediatheken` | 1.0.0 | dieses Repository — Sammelpaket und Menü |
 | `plugin.video.zdf_de_lite` | 5.0.3 | sarbes 5.0.2, repariert |
 | `script.module.libzdf` | 5.0.3 | sarbes 5.0.2, repariert (ZDF **und** 3sat) |
 | `script.module.libard` | 6.0.4 | sarbes 6.0.3, repariert |
+
+Dazu das Build-Angebot: [`repo/builds.json`](repo/builds.json) als Katalog und
+die Pakete darunter in [`repo/builds/`](repo/builds/). Die Einrichtungen dort
+bestehen ausschliesslich aus Add-ons der offiziellen Quellen; erzeugt werden sie
+mit `python baue-angebot.py`.
 
 Die Änderungen stehen je Add-on im `<news>`-Abschnitt der `addon.xml` und sind
 damit in Kodi unter *Add-on-Informationen → Änderungsprotokoll* lesbar.
@@ -211,9 +313,15 @@ Repository von **jurialmunkey** für eine aktuelle Fassung des TMDb-Helpers.
   Zielgerät bei deren Anbietern. Dieses Repository verteilt also nur, was in der
   Tabelle oben steht. Verschwindet eine fremde Quelle, fehlt ihr Add-on; der
   Assistent sagt dann, welches.
-- **Ein Paket gehört dem, der es erzeugt.** Es beschreibt ein konkretes Gerät
-  samt dessen Add-on-Liste und bleibt deshalb dort, wo sein Besitzer es ablegt.
-  Im Repository liegt nur der Assistent, nie ein Paket.
+- **Ein erfasstes Gerätepaket gehört dem, der es erzeugt.** Es beschreibt ein
+  konkretes Gerät samt dessen vollständiger Add-on-Liste und bleibt deshalb dort,
+  wo sein Besitzer es ablegt. Im Angebot dieses Repositories stehen nur
+  Einrichtungen aus der Tabelle oben und den offiziellen Quellen —
+  `baue-angebot.py` lässt alles weg, was `.gitignore` ignoriert, und
+  `geraet-*.zip` steht dort. Für eigene Pakete ist der eigene Katalog da: Paket
+  und `builds.json` auf den eigenen Speicher legen, die Adresse unter
+  *Einstellungen → Build-Angebot* eintragen. Dieselbe Auswahlliste, nur dass
+  nichts davon veröffentlicht wird.
 
 ## Selbst bauen
 
@@ -235,6 +343,18 @@ python vorlage.py <ordner-mit-userdata>
 Das Skript filtert dabei heraus, was gerätegebunden ist (Auflösung, Audio-Gerät)
 oder vertraulich (Passwörter, Geräte-UUID), und schreibt das Startmenü neu — ein
 weitergegebenes Menü darf nur auf Add-ons zeigen, die das Paket auch mitbringt.
+
+Das Build-Angebot entsteht getrennt davon:
+
+```
+python baue-angebot.py
+```
+
+Es packt die mitgelieferte Vorlage als Paket nach `repo/builds/` und schreibt
+`repo/builds.json`. Der Dateiname trägt den Stand, damit ein weitergegebener Link
+niemals anderen Inhalt bekommt — dieselbe Regel, die `build.py` für Add-on-ZIPs
+über `git cat-file` durchsetzt: was im letzten Commit steht, wird nicht neu
+gepackt. Für eine Änderung geht die Versionsnummer hoch.
 
 Nach dem Bauen `repo/` committen und pushen; die URLs in
 `src/repository.jorga/addon.xml` zeigen auf `raw.githubusercontent.com`, das
